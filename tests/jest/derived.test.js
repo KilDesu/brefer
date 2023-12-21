@@ -43,4 +43,17 @@ describe("Derived", () => {
 
 		expect(preprocessed.code).toStrictEqual(expectedCode);
 	});
+
+	test("Class property declaration", async () => {
+		const file = "classProperty.svelte";
+		const content = fs.readFileSync(`${path}/${file}`, "utf8");
+
+		const preprocessed = await preprocess(content, BrefPreprocessor(), {
+			filename: file,
+		});
+
+		const expectedCode = `<script>\r\n\tclass Foo {\r\n\t\t$count = $state(0);\r\n\t\t$double = $derived(this.$count * 2);\r\n\t}\r\n</script>\r\n`;
+
+		expect(preprocessed.code).toStrictEqual(expectedCode);
+	});
 });
