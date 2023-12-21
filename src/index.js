@@ -18,7 +18,7 @@ import {
  */
 const preprocessor = (options) => ({
 	name: "bref",
-	async script({ content, filename, attributes, markup }) {
+	async script({ content, filename }) {
 		const prefix = options?.prefix || "$";
 		/** @type { Bref.ReactiveValue[] } */
 		const REACTIVE_VALUES = [];
