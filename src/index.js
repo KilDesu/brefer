@@ -41,21 +41,6 @@ const preprocessor = (options) => ({
 
 		walk(ast, {
 			enter(node) {
-				// if (node.type === "VariableDeclarator") {
-				// 	handleVariableDeclarations(
-				// 		/** @type { Bref.VariableDeclarator } */ (node),
-				// 		REACTIVE_VALUES,
-				// 		prefix
-				// 	);
-
-				// 	handleDerivedVariables(
-				// 		/** @type { Bref.VariableDeclarator } */ (node),
-				// 		DERIVED_VALUES,
-				// 		REACTIVE_VALUES,
-				// 		prefix
-				// 	);
-				// }
-
 				if (node.type === "ClassBody") {
 					handleClassDeclarations(
 						/** @type {Bref.ClassBody} */ (node),
