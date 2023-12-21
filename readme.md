@@ -53,9 +53,9 @@ With Bref, I opted for a more straightforward syntax:
 > Prefixing your variables with `$` makes them reactive.
 
 That is really all you have to know (currently).
-Is it a `$state`? Is it a `$derived`? The preprocessor takes care of it for you:
+Is it a `$state`? Is it `$derived`? The preprocessor takes care of it all for you:
 
-> If a reactive variable depends on other reactive variable, it's `$derived`. Otherwise, it's a `$state`.
+> If a reactive variable depends on other reactive variables, it's `$derived`. Otherwise, it's a `$state`.
 
 ### Here are some examples
 
@@ -151,3 +151,23 @@ export default config;
 
 Bref also works with Typescript. In fact, it's an array containing svelte's `typescript()` preprocessor before the real Bref preprocessor.
 This is why you have to use the spread operator (`...`) when using Bref with other preprocessors.
+
+## Pros and cons
+
+### Pros
+
+- More concise than Svelte 5's syntax
+- Easier to keep track of reactive variables (they all have the same prefix)
+- Works with Typescript
+- Easy to integrate
+- It's a preprocessor, so you can still use Svelte 5's syntax if you want to
+
+### Cons
+
+- You have to use a preprocessor
+- Svelte's checker will probably complain about the `$` prefix being reserved
+
+## Contribute
+
+If you like the concept and want to contribute, feel free to open an issue or a pull request.
+Also, if you have any idea to improve or extend the syntax, I'm all ears!
