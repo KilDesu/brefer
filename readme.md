@@ -78,10 +78,10 @@ Is it a `$state`? Is it `$derived`? The preprocessor takes care of it all for yo
 ```svelte
 <script>
   let $count = 0;
-  let double = $count * 2;
+  let $double = $count * 2;
 </script>
 
-<button on:click={() => count++}>
+<button on:click={() => $count++}>
   clicks: {count}
   double: {double}
 </button>
@@ -103,7 +103,7 @@ Is it a `$state`? Is it `$derived`? The preprocessor takes care of it all for yo
   let counter = new Counter();
 </script>
 
-<button on:click={counter.increment}>
+<button on:click={() => counter.increment()}>
   clicks: {increment.count}
   double: {increment.double}
 </button>
@@ -125,7 +125,7 @@ Is it a `$state`? Is it `$derived`? The preprocessor takes care of it all for yo
   let counter = new Counter();
 </script>
 
-<button on:click={counter.increment}>
+<button on:click={() => counter.increment()}>
   clicks: {increment.$count}
   double: {increment.$double}
 </button>
