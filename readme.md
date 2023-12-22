@@ -15,10 +15,10 @@ For PNPM and YARN, just replace `npm` with `pnpm` or `yarn` in the command above
 #### svelte.config.js
 
 ```js
-import BrefPreprocess from "bref-preprocessor";
+import brefPreprocess from "bref-preprocessor";
 
 const config = {
-	preprocess: BrefPreprocess(),
+	preprocess: brefPreprocess(),
 };
 export default config;
 ```
@@ -29,10 +29,10 @@ export default config;
 
 ```js
 import { vitePreprocess } from "@sveltejs/vite-plugin-svelte";
-import BrefPreprocess from "bref-preprocessor";
+import brefPreprocess from "bref-preprocessor";
 
 const config = {
-	preprocess: [vitePreprocess(), ...BrefPreprocess()],
+	preprocess: [vitePreprocess(), ...brefPreprocess()],
 };
 export default config;
 ```
