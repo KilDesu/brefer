@@ -104,8 +104,8 @@ Is it a `$state`? Is it `$derived`? The preprocessor takes care of it all for yo
 </script>
 
 <button on:click={() => counter.increment()}>
-  clicks: {increment.count}
-  double: {increment.double}
+  clicks: {counter.count}
+  double: {counter.double}
 </button>
 ```
 
@@ -126,8 +126,8 @@ Is it a `$state`? Is it `$derived`? The preprocessor takes care of it all for yo
 </script>
 
 <button on:click={() => counter.increment()}>
-  clicks: {increment.$count}
-  double: {increment.$double}
+  clicks: {counter.$count}
+  double: {counter.$double}
 </button>
 ```
 
