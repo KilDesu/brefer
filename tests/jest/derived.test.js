@@ -1,15 +1,15 @@
-import fs from "fs";
+import { promises as fs } from "fs";
 import { preprocess } from "svelte/compiler";
-import BrefPreprocessor from "../../src/index.js";
+import brefPreprocessor from "../../src/index.js";
 
 const path = "tests/fixtures/derived";
 
 describe("Derived", () => {
 	test("Function with parameter", async () => {
 		const file = "functionWithParam.svelte";
-		const content = fs.readFileSync(`${path}/${file}`, "utf8");
+		const content = await fs.readFile(`${path}/${file}`, { encoding: "utf8" });
 
-		const preprocessed = await preprocess(content, BrefPreprocessor(), {
+		const preprocessed = await preprocess(content, brefPreprocessor(), {
 			filename: file,
 		});
 
@@ -20,9 +20,9 @@ describe("Derived", () => {
 
 	test("Literal expression", async () => {
 		const file = "literalExpression.svelte";
-		const content = fs.readFileSync(`${path}/${file}`, "utf8");
+		const content = await fs.readFile(`${path}/${file}`, { encoding: "utf8" });
 
-		const preprocessed = await preprocess(content, BrefPreprocessor(), {
+		const preprocessed = await preprocess(content, brefPreprocessor(), {
 			filename: file,
 		});
 
@@ -33,9 +33,9 @@ describe("Derived", () => {
 
 	test("Array destructuring", async () => {
 		const file = "arrayDestructuring.svelte";
-		const content = fs.readFileSync(`${path}/${file}`, "utf8");
+		const content = await fs.readFile(`${path}/${file}`, { encoding: "utf8" });
 
-		const preprocessed = await preprocess(content, BrefPreprocessor(), {
+		const preprocessed = await preprocess(content, brefPreprocessor(), {
 			filename: file,
 		});
 
@@ -46,9 +46,9 @@ describe("Derived", () => {
 
 	test("Class property declaration", async () => {
 		const file = "classProperty.svelte";
-		const content = fs.readFileSync(`${path}/${file}`, "utf8");
+		const content = await fs.readFile(`${path}/${file}`, { encoding: "utf8" });
 
-		const preprocessed = await preprocess(content, BrefPreprocessor(), {
+		const preprocessed = await preprocess(content, brefPreprocessor(), {
 			filename: file,
 		});
 
