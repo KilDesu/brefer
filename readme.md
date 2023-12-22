@@ -165,7 +165,8 @@ This is why you have to use the spread operator (`...`) when using Bref with oth
 ### Cons
 
 - You have to use a preprocessor
-- Svelte's checker will probably complain about the `$` prefix being reserved
+- Svelte's checker will probably complain about the `$` prefix being reserved (any possibility to disable it?)
+- It's harder and more verbose to use Svelte stores (not really a problem as they're kind of deprecated in Svelte 5)
 
 ## Contribute
 
