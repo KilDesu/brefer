@@ -139,10 +139,10 @@ If you really hate the `$` prefix, you can change it to something else (like `_`
 
 ```js
 import { vitePreprocess } from "@sveltejs/vite-plugin-svelte";
-import BrefPreprocess from "bref-preprocessor";
+import brefPreprocess from "bref-preprocessor";
 
 const config = {
-	preprocess: [vitePreprocess(), ...BrefPreprocess({ prefix: "_" })],
+	preprocess: [vitePreprocess(), ...brefPreprocess({ prefix: "_" })],
 };
 export default config;
 ```
