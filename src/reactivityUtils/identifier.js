@@ -6,15 +6,15 @@ import { getReactiveDependencies, isReactive } from "../utils.js";
  * variables. If the identifier is not reactive, it is ignored.
  *
  * @export
- * @param {Bref.Identifier} identifier - The identifier node
- * @param {Bref.Expression | null | undefined} initialization - The initialization expression of the identifier
- * @param {Bref.Options} options - Bref options, containing the prefix and the arrays which store the reactive and derived values
+ * @param {Brefer.Identifier} identifier - The identifier node
+ * @param {Brefer.Expression | null | undefined} initialization - The initialization expression of the identifier
+ * @param {Brefer.Context} ctx - Brefer context, containing the prefix and the arrays which store the reactive and derived values as well as the untrack calls
  */
-export function handleIdentifier(identifier, initialization, options) {
-	if (!isReactive(identifier, options.prefix)) return;
+export function handleIdentifier(identifier, initialization, ctx) {
+	if (!isReactive(identifier, ctx.prefix)) return;
 
 	if (!initialization) {
-		options.REACTIVE_VALUES.push({
+		ctx.REACTIVE_VALUES.push({
 			name: identifier.name,
 			start: identifier.end,
 			end: identifier.end,
@@ -23,17 +23,17 @@ export function handleIdentifier(identifier, initialization, options) {
 		return;
 	}
 
-	const dependencies = getReactiveDependencies(initialization, options.prefix);
+	const dependencies = getReactiveDependencies(initialization, ctx.prefix);
 
 	if (dependencies.length) {
-		options.DERIVED_VALUES.push({
+		ctx.DERIVED_VALUES.push({
 			name: identifier.name,
 			dependencies,
 			start: initialization.start,
 			end: initialization.end,
 		});
 	} else {
-		options.REACTIVE_VALUES.push({
+		ctx.REACTIVE_VALUES.push({
 			name: identifier.name,
 			start: initialization.start,
 			end: initialization.end,
