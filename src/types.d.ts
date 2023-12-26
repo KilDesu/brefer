@@ -22,7 +22,7 @@ declare namespace Brefer {
 		DERIVED_VALUES: Brefer.DerivedValue[];
 	}
 
-	type Node = import("estree-walker").Node & Position;
+	type Node = import("estree").Node & Position;
 	type VariableDeclaration = Brefer.Node & { type: "VariableDeclaration" };
 	type VariableDeclarator = Brefer.Node & { type: "VariableDeclarator" };
 	type Identifier = Brefer.Node & { type: "Identifier" };
@@ -32,4 +32,12 @@ declare namespace Brefer {
 	type ArrayExpression = import("estree").ArrayExpression & Position;
 	type ClassBody = import("estree").ClassBody & Position;
 	type CallExpression = import("estree").CallExpression & Position;
+
+	export default function (
+		options: PreprocessorOptions
+	): import("svelte/compiler").PreprocessorGroup[];
+
+	export function untrack<T>(val: () => T): T;
+	export function untrack<T>(val: T): T;
+	export function untrack<T>(val: T | (() => T)): T;
 }
