@@ -1,28 +1,23 @@
-import {
-	handleArrayDestructuring,
-	handleIdentifier,
-} from "../reactivityUtils/index.js";
+import { handleIdentifier } from "../reactivityUtils/index.js";
 import { isArrayExpression, isArrayPattern, isIdentifier } from "../utils.js";
 
 /**
  * Handles variable declarations.
- * To encourage clean code, only `let` declarations are handled.
+ * To encourage clean code, only `let` and `const` declarations are handled.
  *
  * @export
- * @param {Bref.VariableDeclaration} node - The variable declaration node
- * @param {Bref.Options} options - Bref options, containing the prefix and the arrays which store the reactive and derived values
+ * @param {Brefer.VariableDeclaration} node - The variable declaration node
+ * @param {Brefer.Context} ctx - Bref context, containing the prefix and the arrays which store the reactive and derived values as well as the untrack calls
  */
-export function handleVariableDeclarations(node, options) {
-	if (node.kind !== "let") return;
+export function handleVariableDeclarations(node, ctx) {
+	if (node.kind === "var") return;
 
 	node.declarations.forEach((declarator) => {
-		if (isArrayPattern(declarator.id) && isArrayExpression(declarator.init)) {
-			handleArrayDestructuring(declarator.id, declarator.init, options);
-		} else if (isIdentifier(declarator.id)) {
+		if (isIdentifier(declarator.id)) {
 			handleIdentifier(
 				declarator.id,
-				/** @type {Bref.Expression | null | undefined} */ (declarator.init),
-				options
+				/** @type {Brefer.Expression | null | undefined} */ (declarator.init),
+				ctx
 			);
 		}
 	});
