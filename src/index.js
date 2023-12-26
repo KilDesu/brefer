@@ -8,31 +8,35 @@ import {
 	handleClassDeclarations,
 	handleVariableDeclarations,
 } from "./reactivityHandlers/index.js";
+import { cleanup } from "./reactivityUtils/cleanup.js";
+import { untrack as untrackSvelte } from "svelte";
+import { isArrowFunction } from "./utils.js";
 
 /**
- * Preprocessor for Bref syntax, using `$` as prefix for reactive variables.
+ * Preprocessor for Bref syntax, using `r$` as prefix for reactive variables.
  * It avoids the need to call `$state` and `$derived` runes every time.
  *
- * @param { Bref.PreprocessorOptions } [options = {}]
+ * @param { Brefer.PreprocessorOptions } [options = {}]
  * @returns { import("svelte/compiler").PreprocessorGroup }
  */
 const preprocessor = (options) => ({
-	name: "bref",
+	name: "brefer",
 	async script({ content, filename }) {
-		const prefix = options?.prefix || "$";
-		/** @type { Bref.ReactiveValue[] } */
+		const prefix = options?.prefix || "r$";
+		/** @type { Brefer.ReactiveValue[] } */
 		const REACTIVE_VALUES = [];
-		/** @type { Bref.DerivedValue[] } */
+		/** @type { Brefer.DerivedValue[] } */
 		const DERIVED_VALUES = [];
 
 		const source = new MagicString(content);
 
-		const ast = /** @type { Bref.Node } */ (
+		const ast = /** @type { Brefer.Node } */ (
 			parse(content, {
 				ecmaVersion: "latest",
 			})
 		);
 
+		/** @type {Brefer.Context} */
 		const brefOptions = {
 			prefix,
 			REACTIVE_VALUES,
@@ -43,12 +47,12 @@ const preprocessor = (options) => ({
 			enter(node) {
 				if (node.type === "ClassBody") {
 					handleClassDeclarations(
-						/** @type {Bref.ClassBody} */ (node),
+						/** @type {Brefer.ClassBody} */ (node),
 						brefOptions
 					);
 				} else if (node.type === "VariableDeclaration") {
 					handleVariableDeclarations(
-						/** @type { Bref.VariableDeclaration } */ (node),
+						/** @type { Brefer.VariableDeclaration } */ (node),
 						brefOptions
 					);
 				}
@@ -66,6 +70,8 @@ const preprocessor = (options) => ({
 			source.appendRight(val.end, `)`);
 		});
 
+		cleanup(ast, source, brefOptions);
+
 		return {
 			code: source.toString(),
 			map: source.generateMap({ hires: true }),
@@ -79,7 +85,35 @@ const preprocessor = (options) => ({
  * It avoids the need to call `$state` and `$derived` runes every time.
  *
  * @export
- * @param { Bref.PreprocessorOptions } [options = {}] - The options for the preprocessor
+ * @param { Brefer.PreprocessorOptions } [options = {}] - The options for the preprocessor
  * @returns { import("svelte/compiler").PreprocessorGroup[] } - The Svelte preprocessor
  */
 export default (options) => [typescript(), preprocessor(options)];
+
+/**
+ * Use untrack to prevent something from being treated as an $effect/$derived dependency.
+ *
+ * This version wraps Svelte's [untrack](https://svelte-5-preview.vercel.app/docs/functions#untrack) function to allow raw states to be passed as a parameter.
+ *
+ * @template T
+ * @overload
+ * @param { () => T } value - The function to untrack
+ * @returns { T } - The value returned by the function
+ */
+/**
+ * @template T
+ * @overload
+ * @param { T } value - The value to untrack
+ * @returns { T } - The value
+ */
+/**
+ * @export
+ * @template T
+ * @param { T | (() => T) } value - The value to untrack
+ * @returns { T } - The value
+ */
+export function untrack(value) {
+	return isArrowFunction(value)
+		? untrackSvelte(value)
+		: untrackSvelte(() => value);
+}
