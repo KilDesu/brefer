@@ -16,10 +16,8 @@
 	},
 	"include": ["src/**/*.js"],
 	"exclude": [
-		"node_modules/**/*",
-		"dist",
-		"examples",
-		"tests/fixtures/**/*",
-		"tests/**/*.test.js"
+		"**/node_modules/**/*",
+		"**/dist",
+		"**/tests/fixtures/**/*.svelte"
 	]
 }
