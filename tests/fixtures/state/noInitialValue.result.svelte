@@ -1,4 +1,4 @@
 <script>
 	// @ts-nocheck
-	let r$count;
+	let r$count = $state();
 </script>

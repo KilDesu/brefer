@@ -1,5 +1,5 @@
 <script>
-	let $count = 0;
+	let r$count = 1;
 
-	let $double = $count * 2;
+	let r$double = r$count * 2;
 </script>

@@ -1,6 +1,6 @@
 <script>
 	class Foo {
-		$count = 0;
-		$double = this.$count * 2;
+		r$count = 1;
+		r$double = this.r$count * 2;
 	}
 </script>

@@ -1,14 +1,15 @@
 <script>
+	// @ts-nocheck
 	let notReactive = true;
 
-	let $foo = "bar";
+	let r$foo = "bar";
 
-	let $count = 0;
+	let r$count = 0;
 
-	let $object = {
+	let r$object = {
 		foo: "bar",
 		baz: "qux",
 	};
 
-	let $array = [1, 2, 3, 4, 5];
+	let r$array = [1, 2, 3, 4, 5];
 </script>
