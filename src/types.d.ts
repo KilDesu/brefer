@@ -1,4 +1,4 @@
-declare namespace Bref {
+declare namespace Brefer {
 	interface PreprocessorOptions {
 		prefix?: string;
 	}
@@ -18,14 +18,14 @@ declare namespace Bref {
 
 	interface Context {
 		prefix: string;
-		REACTIVE_VALUES: Bref.ReactiveValue[];
-		DERIVED_VALUES: Bref.DerivedValue[];
+		REACTIVE_VALUES: Brefer.ReactiveValue[];
+		DERIVED_VALUES: Brefer.DerivedValue[];
 	}
 
 	type Node = import("estree-walker").Node & Position;
-	type VariableDeclaration = Bref.Node & { type: "VariableDeclaration" };
-	type VariableDeclarator = Bref.Node & { type: "VariableDeclarator" };
-	type Identifier = Bref.Node & { type: "Identifier" };
+	type VariableDeclaration = Brefer.Node & { type: "VariableDeclaration" };
+	type VariableDeclarator = Brefer.Node & { type: "VariableDeclarator" };
+	type Identifier = Brefer.Node & { type: "Identifier" };
 
 	type Expression = import("estree").Expression & Position;
 	type ArrayPattern = import("estree").ArrayPattern & Position;
