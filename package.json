@@ -1,6 +1,6 @@
 {
 	"name": "brefer",
-	"version": "1.0.0-alpha.1",
+	"version": "1.0.0-alpha.2",
 	"author": "KilDesu",
 	"description": "Svelte 5 preprocessor to shorten runes syntax.",
 	"keywords": [
