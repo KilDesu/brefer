@@ -16,7 +16,7 @@ declare namespace Bref {
 		dependencies: string[];
 	}
 
-	interface Options {
+	interface Context {
 		prefix: string;
 		REACTIVE_VALUES: Bref.ReactiveValue[];
 		DERIVED_VALUES: Bref.DerivedValue[];
@@ -31,4 +31,5 @@ declare namespace Bref {
 	type ArrayPattern = import("estree").ArrayPattern & Position;
 	type ArrayExpression = import("estree").ArrayExpression & Position;
 	type ClassBody = import("estree").ClassBody & Position;
+	type CallExpression = import("estree").CallExpression & Position;
 }
