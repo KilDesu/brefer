@@ -1,12 +1,12 @@
-# Bref preprocessor
+# Brefer preprocessor for Svelte 5
 
 ## Installation
 
 ```bash
-npm install -D svelte-bref
+npm install -D brefer
 ```
 
-For PNPM and YARN, just replace `npm` with `pnpm` or `yarn` in the command above.
+For PNPM and YARN, just replace `npm install` with `pnpm add` or `yarn add` in the command above.
 
 ## Usage
 
@@ -15,10 +15,10 @@ For PNPM and YARN, just replace `npm` with `pnpm` or `yarn` in the command above
 #### svelte.config.js
 
 ```js
-import brefPreprocess from "bref-preprocessor";
+import breferPreprocess from "brefer";
 
 const config = {
-	preprocess: brefPreprocess(),
+	preprocess: breferPreprocess(),
 };
 export default config;
 ```
@@ -29,28 +29,28 @@ export default config;
 
 ```js
 import { vitePreprocess } from "@sveltejs/vite-plugin-svelte";
-import brefPreprocess from "bref-preprocessor";
+import breferPreprocess from "brefer";
 
 const config = {
-	preprocess: [vitePreprocess(), ...brefPreprocess()],
+	preprocess: [vitePreprocess(), ...breferPreprocess()],
 };
 export default config;
 ```
 
 ## What is it?
 
-Bref is a Svelte preprocessor to shorten the new Svelte 5 syntax for handling reactivity (hence the name "Bref", meaning "Brief" in French).
+Brefer is a Svelte preprocessor to shorten the new Svelte 5 syntax for handling reactivity (hence the name "Brefer", made from "Bref", meaning "Brief" in French, with the suffix "er", meaning "more" in English).
 
 ## Why?
 
 What was your reaction when Rich Harris announced that Svelte 4's reactivity, which was as concise as a JS framework reactivity syntax could be, would be abandoned in favor of ~~Vue~~ Runes syntax?
-If you were delighted, Bref is probably not for you. Personally, I didn't want to write `$state` and `$derived` everytime I defined a new reactive variable. That's the reason I created this preprocessor.
+If you were delighted, Brefer is probably not for you. Personally, I didn't want to write `$state` and `$derived` everytime I defined a new reactive variable. That's the reason I created this preprocessor.
 
-## Ok but... What is the Bref syntax?
+## Ok but... What is the Brefer syntax?
 
-With Bref, I opted for a more straightforward syntax:
+With Brefer, I opted for a more straightforward syntax:
 
-> Prefixing your variables with `$` makes them reactive.
+> Prefixing your variables with `r$` makes them reactive.
 
 That is really all you have to know (currently).
 Is it a `$state`? Is it `$derived`? The preprocessor takes care of it all for you:
@@ -73,17 +73,17 @@ Is it a `$state`? Is it `$derived`? The preprocessor takes care of it all for yo
 </button>
 ```
 
-#### With Bref
+#### With Brefer
 
 ```svelte
 <script>
-  let $count = 0;
-  let $double = $count * 2;
+  let r$count = 0;
+  let r$double = r$count * 2;
 </script>
 
-<button on:click={() => $count++}>
-  clicks: {count}
-  double: {double}
+<button on:click={() => r$count++}>
+  clicks: {r$count}
+  double: {r$double}
 </button>
 ```
 
@@ -109,16 +109,16 @@ Is it a `$state`? Is it `$derived`? The preprocessor takes care of it all for yo
 </button>
 ```
 
-#### With Bref
+#### With Brefer
 
 ```svelte
 <script>
   class Counter {
-    $count = 0;
-    $double = this.$count * 2;
+    r$count = 0;
+    r$double = this.r$count * 2;
 
     increment() {
-      this.$count++;
+      this.r$count++;
     }
   }
 
@@ -126,8 +126,8 @@ Is it a `$state`? Is it `$derived`? The preprocessor takes care of it all for yo
 </script>
 
 <button on:click={() => counter.increment()}>
-  clicks: {counter.$count}
-  double: {counter.$double}
+  clicks: {counter.r$count}
+  double: {counter.r$double}
 </button>
 ```
 
@@ -135,22 +135,22 @@ Is it a `$state`? Is it `$derived`? The preprocessor takes care of it all for yo
 
 ### About that...
 
-If you really hate the `$` prefix, you can change it to something else (like `_` or `myOwnPrefix_` for example) by passing the `prefix` option to the preprocessor:
+If you really hate the `r$` prefix, you can change it to something else (like `reactive_` for example) by passing the `prefix` option to the preprocessor:
 
 ```js
 import { vitePreprocess } from "@sveltejs/vite-plugin-svelte";
-import brefPreprocess from "bref-preprocessor";
+import breferPreprocess from "brefer";
 
 const config = {
-	preprocess: [vitePreprocess(), ...brefPreprocess({ prefix: "_" })],
+	preprocess: [vitePreprocess(), ...breferPreprocess({ prefix: "reactive_" })],
 };
 export default config;
 ```
 
 ## Typescript
 
-Bref also works with Typescript. In fact, it's an array containing svelte's `typescript()` preprocessor before the real Bref preprocessor.
-This is why you have to use the spread operator (`...`) when using Bref with other preprocessors.
+Brefer also works with Typescript. In fact, it's an array containing svelte's `typescript()` preprocessor before the real Brefer preprocessor.
+This is why you have to use the spread operator (`...`) when using Brefer with other preprocessors.
 
 ## Pros and cons
 
@@ -165,8 +165,24 @@ This is why you have to use the spread operator (`...`) when using Bref with oth
 ### Cons
 
 - You have to use a preprocessor
-- Svelte's checker will probably complain about the `$` prefix being reserved (any possibility to disable it?)
-- It's harder and more verbose to use Svelte stores (not really a problem as they're kind of deprecated in Svelte 5)
+- Svelte's checker will complain about the `$` prefix being reserved so `r$` is the default option for now (any possibility to disable it?)
+
+## Additional features
+
+### `untrack`
+
+Brefer exports an `untrack` function that wraps Svelte's one. The difference between the two is that Brefer's `untrack` function also accepts a value as an argument, not only a callback.
+
+```js
+import { untrack } from "brefer";
+
+let r$count = 0;
+let r$double = r$count * 2;
+
+$effect(() => {
+	console.log(r$count, untrack(r$double)); // Will rerun when r$count changes but not when r$double changes
+});
+```
 
 ## Contribute
 
