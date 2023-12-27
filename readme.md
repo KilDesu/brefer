@@ -50,7 +50,7 @@ If you were delighted, Brefer is probably not for you. Personally, I didn't want
 
 With Brefer, I opted for a more straightforward syntax:
 
-> Prefixing your variables with `r$` makes them reactive.
+> Prefixing your variables with `$` makes them reactive.
 
 That is really all you have to know (currently).
 Is it a `$state`? Is it `$derived`? The preprocessor takes care of it all for you:
@@ -77,13 +77,13 @@ Is it a `$state`? Is it `$derived`? The preprocessor takes care of it all for yo
 
 ```svelte
 <script>
-  let r$count = 0;
-  let r$double = r$count * 2;
+  let $count = 0;
+  let $double = $count * 2;
 </script>
 
-<button on:click={() => r$count++}>
-  clicks: {r$count}
-  double: {r$double}
+<button on:click={() => $count++}>
+  clicks: {$count}
+  double: {$double}
 </button>
 ```
 
@@ -114,11 +114,11 @@ Is it a `$state`? Is it `$derived`? The preprocessor takes care of it all for yo
 ```svelte
 <script>
   class Counter {
-    r$count = 0;
-    r$double = this.r$count * 2;
+    $count = 0;
+    $double = this.$count * 2;
 
     increment() {
-      this.r$count++;
+      this.$count++;
     }
   }
 
@@ -126,8 +126,8 @@ Is it a `$state`? Is it `$derived`? The preprocessor takes care of it all for yo
 </script>
 
 <button on:click={() => counter.increment()}>
-  clicks: {counter.r$count}
-  double: {counter.r$double}
+  clicks: {counter.$count}
+  double: {counter.$double}
 </button>
 ```
 
@@ -135,7 +135,7 @@ Is it a `$state`? Is it `$derived`? The preprocessor takes care of it all for yo
 
 ### About that...
 
-If you really hate the `r$` prefix, you can change it to something else (like `reactive_` for example) by passing the `prefix` option to the preprocessor:
+If you really hate the `$` prefix, you can change it to something else (like `reactive_` for example) by passing the `prefix` option to the preprocessor:
 
 ```js
 import { vitePreprocess } from "@sveltejs/vite-plugin-svelte";
@@ -165,24 +165,7 @@ This is why you have to use the spread operator (`...`) when using Brefer with o
 ### Cons
 
 - You have to use a preprocessor
-- Svelte's checker will complain about the `$` prefix being reserved so `r$` is the default option for now (any possibility to disable it?)
-
-## Additional features
-
-### `untrack`
-
-Brefer exports an `untrack` function that wraps Svelte's one. The difference between the two is that Brefer's `untrack` function also accepts a value as an argument, not only a callback.
-
-```js
-import { untrack } from "brefer";
-
-let r$count = 0;
-let r$double = r$count * 2;
-
-$effect(() => {
-	console.log(r$count, untrack(r$double)); // Will rerun when r$count changes but not when r$double changes
-});
-```
+- If using the default prefix `$`, it can be confusing if you also use stores (which can be auto-subscribed to with a `$` prefix)
 
 ## Contribute
 
