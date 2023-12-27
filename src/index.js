@@ -2,18 +2,18 @@
 
 import typescript from "svelte-preprocess";
 import { walk } from "estree-walker";
-import { parse } from "acorn";
+import { parse as parseSvelte } from "svelte/compiler";
 import MagicString from "magic-string";
-import {
-	handleClassDeclarations,
-	handleVariableDeclarations,
-} from "./reactivityHandlers/index.js";
-import { cleanup } from "./reactivityUtils/cleanup.js";
 import { untrack as untrackSvelte } from "svelte";
-import { isArrowFunction } from "./utils.js";
+import {
+	isArrowFunction,
+	isIdentifier,
+	isReactiveIdentifier,
+} from "./utils.js";
+import { handleScript } from "./script.js";
 
 /**
- * Preprocessor for Bref syntax, using `r$` as prefix for reactive variables.
+ * Preprocessor for Bref syntax, using `$` as prefix for reactive variables.
  * It avoids the need to call `$state` and `$derived` runes every time.
  *
  * @param { Brefer.PreprocessorOptions } [options = {}]
@@ -21,57 +21,49 @@ import { isArrowFunction } from "./utils.js";
  */
 const preprocessor = (options) => ({
 	name: "brefer",
-	async script({ content, filename }) {
-		const prefix = options?.prefix || "r$";
-		/** @type { Brefer.ReactiveValue[] } */
-		const REACTIVE_VALUES = [];
-		/** @type { Brefer.DerivedValue[] } */
-		const DERIVED_VALUES = [];
+	async markup({ content, filename }) {
+		const ctx = {
+			prefix: options?.prefix || "$",
+			/** @type { Brefer.ReactiveValue[] } */
+			REACTIVE_VALUES: [],
+			/** @type { Brefer.DerivedValue[] } */
+			DERIVED_VALUES: [],
+		};
 
 		const source = new MagicString(content);
 
-		const ast = /** @type { Brefer.Node } */ (
-			parse(content, {
-				ecmaVersion: "latest",
-				sourceType: "module",
-			})
+		const ast = /** @type { Brefer.Root }} */ (
+			await parseSvelte(content, { filename })
 		);
 
-		/** @type {Brefer.Context} */
-		const brefOptions = {
-			prefix,
-			REACTIVE_VALUES,
-			DERIVED_VALUES,
-		};
+		if (!ast.instance) {
+			return {
+				code: content,
+				dependencies: [],
+			};
+		}
 
-		walk(ast, {
+		const scriptContent = /** @type {Brefer.Program} */ (ast.instance.content);
+		let scriptString = content.slice(scriptContent.start, scriptContent.end);
+
+		const newScript = await handleScript(scriptString, ctx);
+		source.update(scriptContent.start, scriptContent.end, newScript);
+
+		const html = ast.html;
+
+		walk(html, {
 			enter(node) {
-				if (node.type === "ClassBody") {
-					handleClassDeclarations(
-						/** @type {Brefer.ClassBody} */ (node),
-						brefOptions
-					);
-				} else if (node.type === "VariableDeclaration") {
-					handleVariableDeclarations(
-						/** @type { Brefer.VariableDeclaration } */ (node),
-						brefOptions
-					);
+				if (isIdentifier(node)) {
+					if (isReactiveIdentifier(node, ctx) && ctx.prefix === "$") {
+						source.update(
+							node.start,
+							node.end,
+							node.name.replace(ctx.prefix, "r$")
+						);
+					}
 				}
 			},
 		});
-
-		REACTIVE_VALUES.forEach((val) => {
-			const equal = val.start === val.end ? " = " : "";
-			source.appendLeft(val.start, `${equal}$state(`);
-			source.appendRight(val.end, `)`);
-		});
-
-		DERIVED_VALUES.forEach((val) => {
-			source.appendLeft(val.start, `$derived(`);
-			source.appendRight(val.end, `)`);
-		});
-
-		cleanup(ast, source, brefOptions);
 
 		return {
 			code: source.toString(),
@@ -90,31 +82,3 @@ const preprocessor = (options) => ({
  * @returns { import("svelte/compiler").PreprocessorGroup[] } - The Svelte preprocessor
  */
 export default (options) => [typescript(), preprocessor(options)];
-
-/**
- * Use untrack to prevent something from being treated as an $effect/$derived dependency.
- *
- * This version wraps Svelte's [untrack](https://svelte-5-preview.vercel.app/docs/functions#untrack) function to allow raw states to be passed as a parameter.
- *
- * @template T
- * @overload
- * @param { () => T } value - The function to untrack
- * @returns { T } - The value returned by the function
- */
-/**
- * @template T
- * @overload
- * @param { T } value - The value to untrack
- * @returns { T } - The value
- */
-/**
- * @export
- * @template T
- * @param { T | (() => T) } value - The value to untrack
- * @returns { T } - The value
- */
-export function untrack(value) {
-	return isArrowFunction(value)
-		? untrackSvelte(value)
-		: untrackSvelte(() => value);
-}
