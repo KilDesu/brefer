@@ -10,7 +10,7 @@ import { isIdentifier } from "../utils.js";
  * @export
  * @param {Brefer.Node} ast - The AST of the source code
  * @param {MagicString} source - The source code as a MagicString instance
- * @param {Brefer.Context} ctx - Brefer context, containing the prefix and the arrays which store the reactive and derived values as well as the untrack calls
+ * @param {Brefer.Context} ctx - Brefer context, containing the prefix and the arrays which store the reactive and derived values
  */
 export function cleanup(ast, source, ctx) {
 	walk(ast, {

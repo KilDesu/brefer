@@ -8,7 +8,7 @@ import { getReactiveDependencies, isReactive } from "../utils.js";
  * @export
  * @param {Brefer.Identifier} identifier - The identifier node
  * @param {Brefer.Expression | null | undefined} initialization - The initialization expression of the identifier
- * @param {Brefer.Context} ctx - Brefer context, containing the prefix and the arrays which store the reactive and derived values as well as the untrack calls
+ * @param {Brefer.Context} ctx - Brefer context, containing the prefix and the arrays which store the reactive and derived values
  */
 export function handleIdentifier(identifier, initialization, ctx) {
 	if (!isReactive(identifier, ctx.prefix)) return;

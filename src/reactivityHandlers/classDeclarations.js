@@ -6,7 +6,7 @@ import { isIdentifier } from "../utils.js";
  *
  * @export
  * @param {Brefer.ClassBody} node - The class body node.
- * @param {Brefer.Context} ctx - Brefer context, containing the prefix and the arrays which store the reactive and derived values as well as the untrack calls
+ * @param {Brefer.Context} ctx - Brefer context, containing the prefix and the arrays which store the reactive and derived values
  * @example
  * ```js
  * class Foo {

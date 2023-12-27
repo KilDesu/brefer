@@ -7,7 +7,7 @@ import { isArrayExpression, isArrayPattern, isIdentifier } from "../utils.js";
  *
  * @export
  * @param {Brefer.VariableDeclaration} node - The variable declaration node
- * @param {Brefer.Context} ctx - Brefer context, containing the prefix and the arrays which store the reactive and derived values as well as the untrack calls
+ * @param {Brefer.Context} ctx - Brefer context, containing the prefix and the arrays which store the reactive and derived values
  */
 export function handleVariableDeclarations(node, ctx) {
 	if (node.kind === "var") return;
