@@ -7,7 +7,7 @@ import brefPreprocessor from "../src/index.js";
  *
  * @export
  * @param {string} fileName
- * @param {"state" | "derived"} type
+ * @param {"state" | "derived" | "markup"} type
  * @return {{ expected: string, got: string }}
  */
 export async function getCodes(fileName, type) {
