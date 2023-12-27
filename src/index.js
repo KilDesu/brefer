@@ -33,6 +33,7 @@ const preprocessor = (options) => ({
 		const ast = /** @type { Brefer.Node } */ (
 			parse(content, {
 				ecmaVersion: "latest",
+				sourceType: "module",
 			})
 		);
 
