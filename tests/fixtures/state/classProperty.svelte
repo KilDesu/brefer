@@ -1,8 +1,8 @@
 <script>
 	// @ts-nocheck
 	class Foo {
-		r$foo = 1;
+		$foo = 1;
 		bar = 2;
-		r$baz;
+		$baz;
 	}
 </script>

@@ -4,6 +4,6 @@
 		return count * 2;
 	}
 
-	let r$count = 1;
-	let r$double = double(r$count);
+	let $count = 1;
+	let $double = double($count);
 </script>
