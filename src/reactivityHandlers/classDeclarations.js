@@ -10,17 +10,17 @@ import { isIdentifier } from "../utils.js";
  * @example
  * ```js
  * class Foo {
- *   r$foo = "bar";
- *   r$baz;
- *   r$qux = `Hello, ${r$foo}!`
+ *   $foo = "bar";
+ *   $baz;
+ *   $qux = `Hello, ${$foo}!`
  * }
  * ```
  * Will result in:
  * ```js
  * class Foo {
- *   r$foo = $state("bar");
- *   r$baz = $state();
- *   r$qux = $derived(`Hello, ${r$foo}!`);
+ *   $foo = $state("bar");
+ *   $baz = $state();
+ *   $qux = $derived(`Hello, ${$foo}!`);
  * }
  * ```
  */
