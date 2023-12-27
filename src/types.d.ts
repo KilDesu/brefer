@@ -23,6 +23,10 @@ declare namespace Brefer {
 	}
 
 	type Node = import("estree").Node & Position;
+	type Program = import("estree").Program & Position;
+	type Root = import("svelte/compiler").Root & {
+		html: Brefer.Node;
+	};
 	type VariableDeclaration = Brefer.Node & { type: "VariableDeclaration" };
 	type VariableDeclarator = Brefer.Node & { type: "VariableDeclarator" };
 	type Identifier = Brefer.Node & { type: "Identifier" };
