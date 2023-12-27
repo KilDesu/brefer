@@ -1,4 +1,4 @@
-import { walk } from "estree-walker";
+import { walk as walk_estree } from "estree-walker";
 
 /**
  * Checks wether a node is a reactive variable or not.
@@ -66,7 +66,7 @@ export function isIdentifier(node) {
  * @return {string[]} - The dependencies of the expression.
  */
 export function getReactiveDependencies(expression, prefix, dependencies = []) {
-	walk(expression, {
+	walk_estree(expression, {
 		enter(expression) {
 			if (isReactive(expression, prefix)) {
 				dependencies.push(expression.name);
@@ -92,4 +92,16 @@ export function isArrowFunction(variable) {
 	}
 
 	return false;
+}
+
+/**
+ * Checks whether the identifier exists inside `REACTIVE_VALUES` or `DERIVED_VALUES`.
+ *
+ * @param {Brefer.Identifier} identifier - The identifier to check.
+ * @param {Brefer.Context} ctx - Brefer context, containing the prefix and the arrays which store the reactive and derived values
+ */
+export function isReactiveIdentifier(identifier, ctx) {
+	return ctx.REACTIVE_VALUES.concat(ctx.DERIVED_VALUES).some(
+		(val) => val.name === identifier.name
+	);
 }
