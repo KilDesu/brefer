@@ -1,7 +1,5 @@
 import { getCodes } from "../index.js";
 
-const path = "tests/fixtures/derived";
-
 describe("Derived", () => {
 	test("Function with parameter", async () => {
 		const { got, expected } = await getCodes("functionWithParam", "derived");

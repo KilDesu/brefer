@@ -1,7 +1,5 @@
 import { getCodes } from "../index.js";
 
-const path = "tests/fixtures/state";
-
 describe("State", () => {
 	test("Basic markup", async () => {
 		const { got, expected } = await getCodes("html", "markup");
