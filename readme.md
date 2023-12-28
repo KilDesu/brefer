@@ -8,6 +8,8 @@ npm install -D brefer
 
 For PNPM and YARN, just replace `npm install` with `pnpm add` or `yarn add` in the command above.
 
+**Warning!** Brefer is not yet ready for production (as if Svelte 5 was). Expect bugs and a lot of breakings changes, as the syntax is not yet entirely decided.
+
 ## Usage
 
 ### With only one preprocessor
@@ -166,6 +168,49 @@ This is why you have to use the spread operator (`...`) when using Brefer with o
 
 - You have to use a preprocessor
 - If using the default prefix `$`, it can be confusing if you also use stores (which can be auto-subscribed to with a `$` prefix)
+- You can't preprocess js/ts files, as [preprocessors only transform .svelte files](https://kit.svelte.dev/docs/integrations)
+
+## Other features
+
+### $effect
+
+Since Brefer's alpha.5, you can also opt for a shorter way to use `$effect`:
+
+```js
+// Svelte 5
+let count = $state(1);
+$effect(() => {
+	console.log(count);
+});
+// Brefer
+let $count = 1;
+$: () => {
+	console.log($count);
+};
+```
+
+Even better, you can also specify the values you want to untrack:
+
+```js
+// Svelte 5
+import { untrack } from "svelte";
+
+let count = $state(1);
+let double = $derived(count * 2);
+$effect(() => {
+	console.log(
+		count,
+		untrack(() => double)
+	);
+});
+// Brefer
+let $count = 1;
+let $double = $count * 2;
+$: $double, // untracked, values, coma, separated,
+	() => {
+		console.log($count, $double);
+	};
+```
 
 ## Contribute
 
