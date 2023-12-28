@@ -1,6 +1,7 @@
 import { promises as fs } from "fs";
 import { preprocess } from "svelte/compiler";
 import brefPreprocessor from "../src/index.js";
+import { format } from "prettier";
 
 /**
  * Prepares the preprocessed code and the expected code for comparison.
@@ -24,5 +25,14 @@ export async function getCodes(fileName, type) {
 		filename: `${fileName}.svelte`,
 	});
 
-	return { expected, got: preprocessed.code };
+	const prettyExpected = await format(expected, {
+		tabWidth: 2,
+		parser: "html",
+	});
+	const prettyGot = await format(preprocessed.code, {
+		tabWidth: 2,
+		parser: "html",
+	});
+
+	return { expected: prettyExpected, got: prettyGot };
 }
