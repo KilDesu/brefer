@@ -4,12 +4,7 @@ import typescript from "svelte-preprocess";
 import { walk } from "estree-walker";
 import { parse as parseSvelte } from "svelte/compiler";
 import MagicString from "magic-string";
-import { untrack as untrackSvelte } from "svelte";
-import {
-	isArrowFunction,
-	isIdentifier,
-	isReactiveIdentifier,
-} from "./utils.js";
+import { isIdentifier, isReactiveIdentifier } from "./utils.js";
 import { handleScript } from "./script.js";
 
 /**
@@ -22,12 +17,12 @@ import { handleScript } from "./script.js";
 const preprocessor = (options) => ({
 	name: "brefer",
 	async markup({ content, filename }) {
+		/** @type {Brefer.Context} */
 		const ctx = {
 			prefix: options?.prefix || "$",
-			/** @type { Brefer.ReactiveValue[] } */
 			REACTIVE_VALUES: [],
-			/** @type { Brefer.DerivedValue[] } */
 			DERIVED_VALUES: [],
+			TO_RENAME_ONLY: [],
 		};
 
 		const source = new MagicString(content);

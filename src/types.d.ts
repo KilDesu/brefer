@@ -20,6 +20,7 @@ declare namespace Brefer {
 		prefix: string;
 		REACTIVE_VALUES: Brefer.ReactiveValue[];
 		DERIVED_VALUES: Brefer.DerivedValue[];
+		TO_RENAME_ONLY: Brefer.ReactiveValue[];
 	}
 
 	type Node = import("estree").Node & Position;

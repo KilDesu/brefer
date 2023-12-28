@@ -1,4 +1,9 @@
-import { getReactiveDependencies, isReactive } from "../utils.js";
+import {
+	getReactiveDependencies,
+	isCallExpression,
+	isIdentifier,
+	isReactive,
+} from "../utils.js";
 
 /**
  * Adds reactive variables to either `REACTIVE_VALUES` or `DERIVED_VALUES`
@@ -20,6 +25,19 @@ export function handleIdentifier(identifier, initialization, ctx) {
 			end: identifier.end,
 		});
 
+		return;
+	}
+
+	if (
+		isCallExpression(initialization) &&
+		isIdentifier(initialization.callee) &&
+		["$state", "$derived"].includes(initialization.callee.name)
+	) {
+		ctx.TO_RENAME_ONLY.push({
+			name: identifier.name,
+			start: initialization.start,
+			end: initialization.end,
+		});
 		return;
 	}
 

@@ -35,11 +35,11 @@ export function isArrayPattern(node) {
 }
 
 /**
- * Checks if a given node is an object expression.
+ * Checks if a given node is a function call expression.
  *
  * @export
  * @param {any} node - The node to check.
- * @returns {node is Brefer.ObjectExpression} Returns wether the node is an object expression or not.
+ * @returns {node is Brefer.CallExpression} Returns wether the node is a function call expression or not.
  */
 export function isCallExpression(node) {
 	return node.type === "CallExpression";
@@ -101,7 +101,8 @@ export function isArrowFunction(variable) {
  * @param {Brefer.Context} ctx - Brefer context, containing the prefix and the arrays which store the reactive and derived values
  */
 export function isReactiveIdentifier(identifier, ctx) {
-	return ctx.REACTIVE_VALUES.concat(ctx.DERIVED_VALUES).some(
-		(val) => val.name === identifier.name
-	);
+	return ctx.REACTIVE_VALUES.concat(
+		ctx.DERIVED_VALUES,
+		ctx.TO_RENAME_ONLY
+	).some((val) => val.name === identifier.name);
 }
