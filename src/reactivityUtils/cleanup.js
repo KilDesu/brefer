@@ -3,9 +3,9 @@ import MagicString from "magic-string";
 import { isIdentifier, isReactiveIdentifier } from "../utils.js";
 
 /**
- * Replaces all the prefixes in front of the state and derived variables by the default prefix `$`.
+ * Replaces all the prefixes in front of the state and derived variables by the prefix `r$`.
  *
- * This is important in case the user wants to use `$` as the prefix, because Svelte uses `$` to subscribe to stores.
+ * This is important in case the user usesthe default `$` as the prefix, because Svelte uses `$` to subscribe to stores.
  *
  * @export
  * @param {Brefer.Node} ast - The AST of the source code
