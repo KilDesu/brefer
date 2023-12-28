@@ -1,6 +1,10 @@
 import { walk } from "estree-walker";
 import MagicString from "magic-string";
-import { isIdentifier, isReactiveIdentifier } from "../utils.js";
+import {
+	isIdentifier,
+	isReactiveIdentifier,
+	isSequenceExpression,
+} from "../utils.js";
 
 /**
  * Replaces all the prefixes in front of the state and derived variables by the prefix `r$`.
@@ -14,14 +18,19 @@ import { isIdentifier, isReactiveIdentifier } from "../utils.js";
  */
 export function cleanup(ast, source, ctx) {
 	walk(ast, {
-		enter(node) {
+		enter(node, parent) {
 			if (isIdentifier(node)) {
 				if (isReactiveIdentifier(node, ctx) && ctx.prefix === "$") {
-					source.update(
-						node.start,
-						node.end,
-						node.name.replace(ctx.prefix, "r$")
-					);
+					if (
+						!isSequenceExpression(parent) &&
+						source.slice(node.start, node.end).length
+					) {
+						source.update(
+							node.start,
+							node.end,
+							node.name.replace(ctx.prefix, "r$")
+						);
+					}
 				}
 			}
 		},
