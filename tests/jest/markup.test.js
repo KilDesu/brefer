@@ -1,6 +1,3 @@
-import { promises as fs } from "fs";
-import { preprocess } from "svelte/compiler";
-import brefPreprocessor from "../../src/index.js";
 import { getCodes } from "../index.js";
 
 const path = "tests/fixtures/state";

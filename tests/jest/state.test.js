@@ -1,6 +1,3 @@
-import { promises as fs } from "fs";
-import { preprocess } from "svelte/compiler";
-import brefPreprocessor from "../../src/index.js";
 import { getCodes } from "../index.js";
 
 const path = "tests/fixtures/state";
@@ -20,6 +17,12 @@ describe("State", () => {
 
 	test("Class property declarations", async () => {
 		const { got, expected } = await getCodes("classProperty", "state");
+
+		expect(got).toStrictEqual(expected);
+	});
+
+	test("Ignore variables that are already a $state", async () => {
+		const { got, expected } = await getCodes("ignoreState", "state");
 
 		expect(got).toStrictEqual(expected);
 	});
