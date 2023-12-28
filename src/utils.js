@@ -57,6 +57,39 @@ export function isIdentifier(node) {
 }
 
 /**
+ * Checks if a given node is an arrow function expression.
+ *
+ * @export
+ * @param {any} node - The node to check.
+ * @returns {node is Brefer.ArrowFunctionExpression} Returns wether the node is an arrow function expression or not.
+ */
+export function isArrowFunctionExpression(node) {
+	return node.type === "ArrowFunctionExpression";
+}
+
+/**
+ * Checks if a given node is an expression statement.
+ *
+ * @export
+ * @param {any} node - The node to check.
+ * @returns {node is Brefer.ExpressionStatement} Returns wether the node is an arrow function expression or not.
+ */
+export function isExpressionStatement(node) {
+	return node.type === "ExpressionStatement";
+}
+
+/**
+ * Checks if a given node is a sequence expression.
+ *
+ * @export
+ * @param {any} node - The node to check.
+ * @returns {node is Brefer.SequenceExpression} Returns wether the node is an arrow function expression or not.
+ */
+export function isSequenceExpression(node) {
+	return node.type === "SequenceExpression";
+}
+
+/**
  * Checks if a given expression expression depends on reactive variables.
  *
  * @export

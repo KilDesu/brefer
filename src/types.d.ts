@@ -16,11 +16,16 @@ declare namespace Brefer {
 		dependencies: string[];
 	}
 
+	interface Effect extends Position {
+		function: Position;
+		untracked: Map<ReactiveValue, Position[]>;
+	}
+
 	interface Context {
 		prefix: string;
-		REACTIVE_VALUES: Brefer.ReactiveValue[];
-		DERIVED_VALUES: Brefer.DerivedValue[];
-		TO_RENAME_ONLY: Brefer.ReactiveValue[];
+		REACTIVE_VALUES: ReactiveValue[];
+		DERIVED_VALUES: DerivedValue[];
+		TO_RENAME_ONLY: ReactiveValue[];
 	}
 
 	type Node = import("estree").Node & Position;
@@ -33,10 +38,15 @@ declare namespace Brefer {
 	type Identifier = Brefer.Node & { type: "Identifier" };
 
 	type Expression = import("estree").Expression & Position;
+	type ArrowFunctionExpression = import("estree").ArrowFunctionExpression &
+		Position;
 	type ArrayPattern = import("estree").ArrayPattern & Position;
 	type ArrayExpression = import("estree").ArrayExpression & Position;
 	type ClassBody = import("estree").ClassBody & Position;
 	type CallExpression = import("estree").CallExpression & Position;
+	type LabeledStatement = import("estree").LabeledStatement & Position;
+	type ExpressionStatement = import("estree").ExpressionStatement & Position;
+	type SequenceExpression = import("estree").SequenceExpression & Position;
 
 	export default function (
 		options: PreprocessorOptions

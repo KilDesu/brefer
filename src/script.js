@@ -6,6 +6,7 @@ import {
 } from "./reactivityHandlers/index.js";
 import { cleanup } from "./reactivityUtils/index.js";
 import MagicString from "magic-string";
+import { handleEffect } from "./reactivityHandlers/effect.js";
 
 /**
  * Handles the script content of the Svelte file.
@@ -32,6 +33,12 @@ export async function handleScript(content, ctx) {
 			} else if (node.type === "VariableDeclaration") {
 				handleVariableDeclarations(
 					/** @type { Brefer.VariableDeclaration } */ (node),
+					ctx
+				);
+			} else if (node.type === "LabeledStatement") {
+				handleEffect(
+					/** @type { Brefer.LabeledStatement } */ (node),
+					source,
 					ctx
 				);
 			}
