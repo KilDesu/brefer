@@ -269,6 +269,7 @@ For example, if you want to have the prefix at 25% opacity and underlined (you c
 ```
 
 It looks like this in my IDE:
+
 ![Highlight example](assets/highlight_example.png)
 
 This extension uses Regex to find the token to change the style of. I know, this regular expression looks atrocious but the part that interests us is pretty short: `([sde]\\$)`.
