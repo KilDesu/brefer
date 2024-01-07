@@ -1,0 +1,15 @@
+{
+	"version": 3,
+	"file": "index.d.ts",
+	"names": [
+		"preprocessScript",
+		"breferPreprocess"
+	],
+	"sources": [
+		"../src/index.js"
+	],
+	"sourcesContent": [
+		null
+	],
+	"mappings": ";;;;;;;iBAqBgBA,gBAAgBA;;;;;;;;;;;;iBAkEhBC,gBAAgBA"
+}

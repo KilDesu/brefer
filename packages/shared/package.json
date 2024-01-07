@@ -1,0 +1,27 @@
+{
+	"name": "@brefer/shared",
+	"version": "1.0.0",
+	"description": "",
+	"type": "module",
+	"types": "./types/index.d.ts",
+	"main": "./src/index.js",
+	"exports": {
+		".": {
+			"types": "./types/index.d.ts",
+			"default": "./src/index.js"
+		}
+	},
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"generate:types": "dts-buddy -m \"@brefer/shared:src/public.d.ts\""
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"devDependencies": {
+		"@types/estree": "^1.0.5",
+		"@types/node": "^20.10.6",
+		"magic-string": "^0.30.5",
+		"vitest": "^1.1.1"
+	}
+}

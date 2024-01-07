@@ -1,0 +1,17 @@
+{
+	"version": 3,
+	"file": "index.d.ts",
+	"names": [
+		"BreferConfig",
+		"brefer"
+	],
+	"sources": [
+		"../src/public.d.ts",
+		"../src/index.js"
+	],
+	"sourcesContent": [
+		null,
+		null
+	],
+	"mappings": ";;kBAEiBA,YAAYA;;;;;;;;;;iBCYbC,MAAMA"
+}

@@ -1,0 +1,34 @@
+{
+	"name": "@brefer/preprocessor",
+	"version": "1.0.0",
+	"description": "A preprocessor for Svelte that allows you to use a shortened syntax for reactivity.",
+	"main": "./src/index.js",
+	"type": "module",
+	"types": "./types/index.d.ts",
+	"files": [
+		"src",
+		"types"
+	],
+	"exports": {
+		".": {
+			"types": "./types/index.d.ts",
+			"default": "./src/index.js"
+		}
+	},
+	"scripts": {
+		"generate:types": "dts-buddy -m \"@brefer/preprocessor:src/public.d.ts\""
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"devDependencies": {
+		"@types/estree": "^1.0.5"
+	},
+	"dependencies": {
+		"@brefer/shared": "workspace:^",
+		"acorn": "^8.11.2",
+		"estree-walker": "^3.0.3",
+		"magic-string": "^0.30.5",
+		"@typescript-eslint/parser": "^6.18.0"
+	}
+}
