@@ -22,6 +22,10 @@ import {
 export function preprocessScript(config, content, filename) {
 	const breferConfig = { ...DEFAULT_CONFIG, ...config };
 
+	if(breferConfig.prefixes.state === breferConfig.prefixes.derived) {
+		throw new Error("Brefer error: Can't use the same prefix for both state and derived variables.")
+	}
+
 	const source = new MagicString(content);
 
 	/** @type {import("@brefer/shared").BreferContext} */
