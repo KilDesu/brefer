@@ -58,10 +58,10 @@ export function wrapInEffect(node, source) {
  */
 export function wrapUntrackedValue(untrackedValue, source, filename) {
 	const tab = filename?.endsWith(".svelte") ? "\t" : "";
-	const importToAdd = `\r\n${tab}import { untrack } from "svelte";\r\n`;
+	const importToAdd = `import { untrack } from "svelte"`;
 
 	if (!source.toString().includes(importToAdd)) {
-		source.prepend(importToAdd);
+		source.prepend(`\r\n${tab}${importToAdd};\r\n`);
 	}
 
 	const [start, end] = untrackedValue.range;
