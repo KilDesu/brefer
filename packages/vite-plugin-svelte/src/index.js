@@ -14,6 +14,11 @@ import { createFilter } from "vite";
  */
 export function brefer(config) {
 	config = { ...DEFAULT_CONFIG, ...config };
+
+	if(config.prefixes.state === config.prefixes.derived) {
+		throw new Error("Brefer error: Can't use the same prefix for both state and derived variables.")
+	}
+	
 	const shouldProcess = createFilter(config.include, config.exclude);
 
 	return {
