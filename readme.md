@@ -46,7 +46,7 @@ export default defineConfig({
 
 ## What is it?
 
-Brefer is a monorepository containing both a Svelte preprocessor and a Vite plugin to shorten the new Svelte 5 syntax for handling reactivity (hence the name "Brefer", made from "Breferkai" which means "Short" in Japanese).
+Brefer is a monorepository containing both a Svelte preprocessor and a Vite plugin to shorten the new Svelte 5 syntax for handling reactivity (hence the name "Brefer", made from "Bref" which means "Brief" in French and the English suffix "er" which means "more").
 If you want to solely process `.svelte` files, using `@brefer/preprocessor` will be enough. If you also want to preprocess `.svelte.js` files, you will need to use `@brefer/vite-plugin-svelte` instead.
 
 ## Why?
