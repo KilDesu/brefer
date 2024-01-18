@@ -4,5 +4,5 @@ let s$arr = [1, 2, 3];
 
 let s$obj = {
 	foo: "bar",
-	baz: "qux",
+	baz: "qux"
 };
