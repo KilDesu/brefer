@@ -5,6 +5,6 @@ export const DEFAULT_CONFIG = {
 	prefixes: {
 		state: "s$",
 		derived: "d$",
-		effect: "e$",
-	},
+		effect: "e$"
+	}
 };

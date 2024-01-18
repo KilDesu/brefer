@@ -19,7 +19,7 @@ for (const feature of features) {
 
 			it(testType, async () => {
 				const result = await preprocess(input, breferPreprocess(), {
-					filename: "input.svelte",
+					filename: "input.svelte"
 				});
 
 				const got = await format(result.code, { parser: "html" });

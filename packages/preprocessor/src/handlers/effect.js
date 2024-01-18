@@ -14,7 +14,7 @@ import {
 	isBlockStatement,
 	isExpressionStatement,
 	isIdentifier,
-	isSequenceExpression,
+	isSequenceExpression
 } from "@brefer/shared";
 import { walk } from "estree-walker";
 
@@ -55,8 +55,8 @@ export function handleLabel(node, ctx) {
 			range: node.range,
 			block: {
 				type: "scope",
-				range: body.range,
-			},
+				range: body.range
+			}
 		});
 	} else if (isExpressionStatement(body)) {
 		const { expression } = body;
@@ -66,8 +66,8 @@ export function handleLabel(node, ctx) {
 				range: node.range,
 				block: {
 					type: "arrow",
-					range: expression.range,
-				},
+					range: expression.range
+				}
 			});
 		} else if (isSequenceExpression(expression)) {
 			const { expressions } = expression;
@@ -80,9 +80,9 @@ export function handleLabel(node, ctx) {
 				range: node.range,
 				block: {
 					type: "arrow",
-					range: effectStatement.range,
+					range: effectStatement.range
 				},
-				untracked: [],
+				untracked: []
 			};
 
 			expressions.forEach((expr) => {
@@ -94,10 +94,10 @@ export function handleLabel(node, ctx) {
 							if (isIdentifier(bodyNode) && bodyNode.name === untrackedVal) {
 								/** @type {ReactiveValue[]} */ (effect.untracked).push({
 									name: untrackedVal,
-									range: bodyNode.range,
+									range: bodyNode.range
 								});
 							}
-						},
+						}
 					});
 				}
 			});

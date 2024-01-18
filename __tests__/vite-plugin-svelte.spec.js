@@ -15,17 +15,13 @@ for (const language of languages) {
 
 			for (const testType of testTypes) {
 				const path = `${fixtures}/${language}/${feature}/${testType}`;
-				const read = async (type) =>
-					await fs.readFile(`${path}/${type}.${language}`, "utf-8");
+				const read = async (type) => await fs.readFile(`${path}/${type}.${language}`, "utf-8");
 
 				const input = await read("input");
 				const output = await read("output");
 
 				it(testType, async () => {
-					const result = await brefer().transform(
-						input,
-						`${path}/input.${language}`
-					);
+					const result = await brefer().transform(input, `${path}/input.${language}`);
 
 					const parser = language === "svelte" ? "html" : "typescript";
 

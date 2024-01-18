@@ -15,10 +15,12 @@ import { createFilter } from "vite";
 export function brefer(config) {
 	config = { ...DEFAULT_CONFIG, ...config };
 
-	if(config.prefixes.state === config.prefixes.derived) {
-		throw new Error("Brefer error: Can't use the same prefix for both state and derived variables.")
+	if (config.prefixes.state === config.prefixes.derived) {
+		throw new Error(
+			"Brefer error: Can't use the same prefix for both state and derived variables."
+		);
 	}
-	
+
 	const shouldProcess = createFilter(config.include, config.exclude);
 
 	return {
@@ -30,13 +32,13 @@ export function brefer(config) {
 
 			if (id.endsWith(".svelte")) {
 				const preprocessed = await sveltePreprocess(code, breferPreprocess(), {
-					filename: id,
+					filename: id
 				});
 
 				return {
 					code: preprocessed.code,
 					map: /** @type {string} */ (preprocessed.map),
-					id,
+					id
 				};
 			}
 			if (id.endsWith(".svelte.js") || id.endsWith(".svelte.ts")) {
@@ -45,9 +47,9 @@ export function brefer(config) {
 				return {
 					code: preprocessed.code,
 					map: preprocessed.map,
-					id,
+					id
 				};
 			}
-		},
+		}
 	};
 }

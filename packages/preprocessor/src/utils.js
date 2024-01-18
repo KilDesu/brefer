@@ -29,7 +29,7 @@ export function handleIdentifier(identifier, initialization, ctx) {
 
 		ctx.REACTIVE_VALUES.push({
 			name: identifier.name,
-			range: [identifierEnd, identifierEnd],
+			range: [identifierEnd, identifierEnd]
 		});
 		return;
 	}
@@ -44,6 +44,6 @@ export function handleIdentifier(identifier, initialization, ctx) {
 
 	ctx.REACTIVE_VALUES.push({
 		name: identifier.name,
-		range: initialization.range,
+		range: initialization.range
 	});
 }
