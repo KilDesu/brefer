@@ -12,8 +12,14 @@ export interface BreferConfig {
 export interface BreferContext {
 	config: BreferConfig;
 	source: MagicString;
+	svelteImports: SvelteImports;
 	REACTIVE_VALUES: ReactiveValue[];
 	EFFECTS: Effect[];
+}
+
+export interface SvelteImports {
+	default?: import("./public.d.ts").BreferNode<import("estree").ImportDefaultSpecifier>;
+	named: import("./public.d.ts").BreferNode<import("estree").ImportSpecifier>[];
 }
 
 export type BreferNode<T> = T & Position;

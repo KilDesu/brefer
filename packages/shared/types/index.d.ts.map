@@ -4,6 +4,7 @@
 	"names": [
 		"BreferConfig",
 		"BreferContext",
+		"SvelteImports",
 		"BreferNode",
 		"DEFAULT_CONFIG",
 		"Position",
@@ -20,11 +21,16 @@
 		"isCallExpression",
 		"isArrowFunctionExpression",
 		"isBlockStatement",
+		"isImportDeclaration",
+		"isImportSpecifier",
+		"isImportDefaultSpecifier",
 		"isReactive",
+		"getSvelteImports",
 		"wrapInState",
 		"wrapInDerived",
 		"wrapInEffect",
-		"wrapUntrackedValue"
+		"wrapUntrackedValue",
+		"addUntrackImport"
 	],
 	"sources": [
 		"../src/public.d.ts",
@@ -38,5 +44,5 @@
 		null,
 		null
 	],
-	"mappings": ";;kBAGiBA,YAAYA;;;;;;;;kBAQZC,aAAaA;;;;;;;aAOlBC,UAAUA;;cAKTC,cAAcA;WCvBVC,QAAQA;;;;;;;;;WASRC,aAAaA;;;;;;;WAObC,MAAMA;;;;;;;;;iBCVPC,YAAYA;;;;;;iBAUZC,qBAAqBA;;;;;;iBAUrBC,oBAAoBA;;;;;;iBAUpBC,WAAWA;;;;;;iBAUXC,kBAAkBA;;;;;;iBAUlBC,qBAAqBA;;;;;;iBAUrBC,oBAAoBA;;;;;;iBAUpBC,iBAAiBA;;;;;;iBAUjBC,gBAAgBA;;;;;;iBAUhBC,yBAAyBA;;;;;;iBAUzBC,gBAAgBA;;;;;iBAWhBC,UAAUA;;;;;;;;;iBC7GVC,WAAWA;;;;;;;iBAaXC,aAAaA;;;;;;;iBAYbC,YAAYA;;;;;;;;;;iBAsBZC,kBAAkBA"
+	"mappings": ";;kBAGiBA,YAAYA;;;;;;;;kBAQZC,aAAaA;;;;;;;;kBAQbC,aAAaA;;;;;aAKlBC,UAAUA;;cAKTC,cAAcA;WC7BVC,QAAQA;;;;;;;;;WASRC,aAAaA;;;;;;;WAObC,MAAMA;;;;;;;;;iBCVPC,YAAYA;;;;;;iBAUZC,qBAAqBA;;;;;;iBAUrBC,oBAAoBA;;;;;;iBAUpBC,WAAWA;;;;;;iBAUXC,kBAAkBA;;;;;;iBAUlBC,qBAAqBA;;;;;;iBAUrBC,oBAAoBA;;;;;;iBAUpBC,iBAAiBA;;;;;;iBAUjBC,gBAAgBA;;;;;;iBAUhBC,yBAAyBA;;;;;;iBAUzBC,gBAAgBA;;;;;;iBAUhBC,mBAAmBA;;;;;;iBAUnBC,iBAAiBA;;;;;;iBAUjBC,wBAAwBA;;;;;iBAWxBC,UAAUA;;;;;;iBAgBVC,gBAAgBA;;;;;;;;;iBC3JhBC,WAAWA;;;;;;;iBAaXC,aAAaA;;;;;;;iBAYbC,YAAYA;;;;;;;iBAsBZC,kBAAkBA;;;;;;;iBAclBC,gBAAgBA"
 }
