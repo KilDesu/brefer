@@ -8,6 +8,7 @@ import {
 	wrapInState,
 	wrapUntrackedValue,
 	DEFAULT_CONFIG,
+	addUntrackImport
 } from "@brefer/shared";
 
 /**
@@ -22,8 +23,10 @@ import {
 export function preprocessScript(config, content, filename) {
 	const breferConfig = { ...DEFAULT_CONFIG, ...config };
 
-	if(breferConfig.prefixes.state === breferConfig.prefixes.derived) {
-		throw new Error("Brefer error: Can't use the same prefix for both state and derived variables.")
+	if (breferConfig.prefixes.state === breferConfig.prefixes.derived) {
+		throw new Error(
+			"Brefer error: Can't use the same prefix for both state and derived variables."
+		);
 	}
 
 	const source = new MagicString(content);
@@ -32,28 +35,29 @@ export function preprocessScript(config, content, filename) {
 	const context = {
 		source,
 		config: breferConfig,
+		svelteImports: {
+			default: undefined,
+			named: []
+		},
 		REACTIVE_VALUES: [],
-		EFFECTS: [],
+		EFFECTS: []
 	};
 
-	const ast =
-		/** @type {import("@brefer/shared").BreferNode<import("estree").Node>} */ (
-			parse(content, {
-				ecmaVersion: "latest",
-				sourceType: "module",
-				range: true,
-			})
-		);
+	const ast = /** @type {import("@brefer/shared").BreferNode<import("estree").Node>} */ (
+		parse(content, {
+			ecmaVersion: "latest",
+			sourceType: "module",
+			range: true
+		})
+	);
 
 	walk(ast, {
 		enter(node) {
 			handleReactivity(
-				/** @type {import("@brefer/shared").BreferNode<import("estree").Node>} */ (
-					node
-				),
+				/** @type {import("@brefer/shared").BreferNode<import("estree").Node>} */ (node),
 				context
 			);
-		},
+		}
 	});
 
 	context.REACTIVE_VALUES.forEach((value) => {
@@ -68,16 +72,16 @@ export function preprocessScript(config, content, filename) {
 		wrapInEffect(effect, source);
 
 		if (effect.untracked?.length) {
-			effect.untracked.forEach((value) =>
-				wrapUntrackedValue(value, source, filename)
-			);
+			addUntrackImport(source, context, filename);
+
+			effect.untracked.forEach((value) => wrapUntrackedValue(value, source));
 		}
 	});
 
 	return {
 		code: source.toString(),
 		map: source.generateMap({ hires: true }),
-		filename,
+		filename
 	};
 }
 
@@ -95,6 +99,6 @@ export function breferPreprocess(config = {}) {
 		name: "brefer-preprocessor",
 		async script({ content, filename }) {
 			return preprocessScript(config, content, filename);
-		},
+		}
 	};
 }

@@ -2,6 +2,8 @@ import {
 	isVariableDeclaration,
 	isClassBody,
 	isLabeledStatement,
+	isImportDeclaration,
+	getSvelteImports
 } from "@brefer/shared";
 import * as reactivity from "./reactive.js";
 import * as effect from "./effect.js";
@@ -28,5 +30,7 @@ export function handleReactivity(node, ctx) {
 		reactivity.handleClassDeclaration(node, ctx);
 	} else if (isLabeledStatement(node)) {
 		effect.handleLabel(node, ctx);
+	} else if (isImportDeclaration(node)) {
+		getSvelteImports(node, ctx);
 	}
 }
