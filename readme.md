@@ -133,8 +133,8 @@ That is really all you have to know (currently).
 </script>
 
 <button on:click={() => counter.increment()}>
-  clicks: {counter.$count}
-  double: {counter.$double}
+  clicks: {counter.s$count}
+  double: {counter.d$double}
 </button>
 ```
 
