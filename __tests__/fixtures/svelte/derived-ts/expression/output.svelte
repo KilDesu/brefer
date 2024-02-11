@@ -1,4 +1,4 @@
 <script lang="ts">
-	let s$count: number = $state(1);
-	let d$double: number = $derived(s$count * 2);
+	let count: number = $state(1);
+	let double: number = $derived(count * 2);
 </script>

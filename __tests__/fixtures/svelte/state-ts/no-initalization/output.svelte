@@ -1,5 +1,3 @@
 <script lang="ts">
-	let s$foo: string = $state();
-
-	s$foo = "bar";
+	let foo: string = $state();
 </script>

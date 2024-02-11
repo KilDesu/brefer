@@ -1,9 +1,8 @@
 <script lang="ts">
-	let s$count: number = 1;
-	let d$double: number = s$count * 2;
+	let count: number = 1;
+	let double: number = $(count * 2);
 
-	e$: d$double,
-		() => {
-			console.log(s$count, d$double);
-		};
+	$$(() => {
+		console.log(count, $untrack(double));
+	});
 </script>

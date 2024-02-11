@@ -1,7 +1,7 @@
-let s$count: number = 1;
+let count: number = 1;
 
 function doubleCount() {
-	return s$count * 2;
+  return count * 2;
 }
 
-let d$double: number = doubleCount();
+let double: number = $(doubleCount);

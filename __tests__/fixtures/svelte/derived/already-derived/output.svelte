@@ -1,5 +1,5 @@
 <script>
-	let s$count = $state(1);
+	let count = $state(1);
 
-	let d$double = $derived(s$count * 2);
+	let double = $derived(count * 2);
 </script>

@@ -1,1 +1,1 @@
-let s$foo = $state("bar");
+let foo = $state("bar");

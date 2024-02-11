@@ -1,7 +1,7 @@
 <script lang="ts">
-	let s$count: number = 1;
+	let count: number = 1;
 
-	e$: () => {
-		console.log(s$count);
-	};
+	$$(() => {
+		console.log(count);
+	});
 </script>

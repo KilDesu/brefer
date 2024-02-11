@@ -1,8 +1,8 @@
-let s$foo = $state("bar");
+let foo = $state("bar");
 
-let s$arr = $state([1, 2, 3]);
+let arr = $state([1, 2, 3]);
 
-let s$obj = $state({
-	foo: "bar",
-	baz: "qux",
+let obj = $state({
+  foo: "bar",
+  baz: "qux",
 });

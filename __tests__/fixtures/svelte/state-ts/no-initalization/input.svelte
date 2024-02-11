@@ -1,5 +1,3 @@
 <script lang="ts">
-	let s$foo: string;
-
-	s$foo = "bar";
+	let foo: string;
 </script>

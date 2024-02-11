@@ -1,8 +1,8 @@
 <script>
-	let s$count = $state(1);
+	let count = $state(1);
 
 	$effect(() => {
-		console.log(s$count);
+		console.log(count);
 
 		return () => {
 			console.log("cleanup");

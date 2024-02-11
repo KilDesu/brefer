@@ -1,3 +1,3 @@
 <script>
-	let s$foo;
+	let foo;
 </script>

@@ -1,9 +1,9 @@
 <script>
-	let s$foo = "bar";
+	let foo = "bar";
 
-	let s$arr = [1, 2, 3];
+	let arr = [1, 2, 3];
 
-	let s$obj = {
+	let obj = {
 		foo: "bar",
 		baz: "qux",
 	};

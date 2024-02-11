@@ -1,4 +1,4 @@
 <script>
-	let s$count = 1;
-	let d$double = s$count * 2;
+	let count = 1;
+	let double = $(count * 2);
 </script>

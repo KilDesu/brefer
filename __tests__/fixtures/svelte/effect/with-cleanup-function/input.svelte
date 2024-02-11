@@ -1,11 +1,11 @@
 <script>
-	let s$count = 1;
+	let count = 1;
 
-	e$: () => {
-		console.log(s$count);
+	$$(() => {
+		console.log(count);
 
 		return () => {
 			console.log("cleanup");
 		};
-	};
+	});
 </script>

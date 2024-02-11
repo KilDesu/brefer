@@ -1,9 +1,9 @@
 <script>
-	let s$count = $state(1);
+	let count = $state(1);
 
 	function doubleCount() {
-		return s$count * 2;
+		return count * 2;
 	}
 
-	let d$double = $derived(doubleCount());
+	let double = $derived.call(doubleCount);
 </script>
