@@ -1,6 +1,5 @@
 {
 	"name": "brefer",
-	"private": true,
 	"description": "Svelte 5 preprocessor to shorten runes syntax.",
 	"author": "KilDesu",
 	"license": "MIT",
