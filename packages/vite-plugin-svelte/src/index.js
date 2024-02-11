@@ -1,6 +1,5 @@
 import { preprocess as sveltePreprocess } from "svelte/compiler";
 import { breferPreprocess, preprocessScript } from "@brefer/preprocessor";
-import { DEFAULT_CONFIG } from "@brefer/shared";
 import { createFilter } from "vite";
 
 /**
@@ -12,8 +11,7 @@ import { createFilter } from "vite";
  * @param {import("./public.js").BreferConfig} config
  * @returns {import("vite").Plugin}
  */
-export function brefer(config) {
-	config = { ...DEFAULT_CONFIG, ...config };
+export function brefer(config = {}) {
 	const shouldProcess = createFilter(config.include, config.exclude);
 
 	return {
@@ -35,7 +33,7 @@ export function brefer(config) {
 				};
 			}
 			if (id.endsWith(".svelte.js") || id.endsWith(".svelte.ts")) {
-				const preprocessed = await preprocessScript(config, code, id);
+				const preprocessed = await preprocessScript(code, id, id.slice(-2));
 
 				return {
 					code: preprocessed.code,
