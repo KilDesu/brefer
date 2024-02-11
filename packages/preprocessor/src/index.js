@@ -1,80 +1,69 @@
-import { parse } from "@typescript-eslint/parser";
-import { walk } from "estree-walker";
-import MagicString from "magic-string";
-import { handleReactivity } from "./handlers/index.js";
+import { parse, print, visit, types } from "recast";
+import TSParser from "recast/parsers/typescript.js";
+import EsprimaParser from "recast/parsers/esprima.js";
+import { handleUntrack, importUntrack } from "./handlers/untrack.js";
 import {
-	wrapInDerived,
-	wrapInEffect,
-	wrapInState,
-	wrapUntrackedValue,
-	DEFAULT_CONFIG,
-} from "@brefer/shared";
+	handleDeclarator,
+	handleVariableDeclaration,
+} from "./handlers/declaration.js";
+import { handleEffect } from "./handlers/call-expressions.js";
+import { handleFrozen } from "./handlers/new-runes.js";
 
 /**
- *
  * Preprocesses the content of the script tag in .svelte files.
- *
- * @param {string} content
- * @param {string} [filename]
- * @param {Partial<import("@brefer/shared").BreferConfig>} config
- * @returns
+ * @param {string} content - The content of the script tag
+ * @param {string} [filename] - The name of the file
+ * @param {string | boolean} [lang] - The name of the file
  */
-export function preprocessScript(config, content, filename) {
-	const breferConfig = { ...DEFAULT_CONFIG, ...config };
+export function preprocessScript(content, filename, lang) {
+	const parser =
+		typeof lang === "string" && ["ts", "typescript"].includes(lang)
+			? TSParser
+			: EsprimaParser;
 
-	const source = new MagicString(content);
+	const ast = parse(content, {
+		sourceFileName: filename,
+		parser,
+	});
 
-	/** @type {import("@brefer/shared").BreferContext} */
-	const context = {
-		source,
-		config: breferConfig,
-		REACTIVE_VALUES: [],
-		EFFECTS: [],
-	};
+	visit(ast, {
+		visitProgram(path) {
+			if (content.includes("$untrack")) {
+				const program = path.node;
+				importUntrack(program);
+			}
 
-	const ast =
-		/** @type {import("@brefer/shared").BreferNode<import("estree").Node>} */ (
-			parse(content, {
-				ecmaVersion: "latest",
-				sourceType: "module",
-				range: true,
-			})
-		);
+			return this.traverse(path);
+		},
+		visitClassProperty(path) {
+			const classDeclaration = path.node;
+			handleDeclarator(classDeclaration);
 
-	walk(ast, {
-		enter(node) {
-			handleReactivity(
-				/** @type {import("@brefer/shared").BreferNode<import("estree").Node>} */ (
-					node
-				),
-				context
-			);
+			return this.traverse(path);
+		},
+		visitVariableDeclaration(path) {
+			const varDeclaration = path.node;
+			handleVariableDeclaration(varDeclaration);
+
+			return this.traverse(path);
+		},
+		visitCallExpression(path) {
+			const { Identifier } = types.namedTypes;
+			const callExpression = path.node;
+			handleEffect(callExpression);
+
+			if (Identifier.check(callExpression.callee)) {
+				if (callExpression.callee.name === "$untrack")
+					handleUntrack(callExpression);
+				else if (callExpression.callee.name === "$frozen")
+					handleFrozen(callExpression);
+			}
+
+			return this.traverse(path);
 		},
 	});
 
-	context.REACTIVE_VALUES.forEach((value) => {
-		if (value.name.startsWith(breferConfig.prefixes.state)) {
-			wrapInState(value, source);
-		} else {
-			wrapInDerived(value, source);
-		}
-	});
-
-	context.EFFECTS.forEach((effect) => {
-		wrapInEffect(effect, source);
-
-		if (effect.untracked?.length) {
-			effect.untracked.forEach((value) =>
-				wrapUntrackedValue(value, source, filename)
-			);
-		}
-	});
-
-	return {
-		code: source.toString(),
-		map: source.generateMap({ hires: true }),
-		filename,
-	};
+	return print(ast);
 }
 
 /**
@@ -83,14 +72,13 @@ export function preprocessScript(config, content, filename) {
  *
  * If you also want to preprocess .svelte.js files, use `@brefer/vite-plugin-svelte` instead.
  *
- * @param { Partial<import("@brefer/shared").BreferConfig> } [config = {}]
  * @returns { import("svelte/compiler").PreprocessorGroup }
  */
-export function breferPreprocess(config = {}) {
+export function breferPreprocess() {
 	return {
 		name: "brefer-preprocessor",
-		async script({ content, filename }) {
-			return preprocessScript(config, content, filename);
+		async script({ content, filename, attributes }) {
+			return preprocessScript(content, filename, attributes.lang);
 		},
 	};
 }
