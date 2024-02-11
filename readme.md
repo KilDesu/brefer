@@ -1,17 +1,21 @@
 # Brefer project for Svelte 5 preprocessing
 
+This is the monorepository for the Brefer project.
+
+The project includes both a Vite plugin and a more simple, yet still powerful processor to be able to use a simpler and more concise syntax in Svelte 5.
+
 ## Installation
 
 ### Svelte preprocessor
 
 ```bash
-npm install -D @brefer/preprocessor
+npm install -D @brefer/preprocessor@next
 ```
 
 ### Vite plugin for Svelte
 
 ```bash
-npm install -D @brefer/vite-plugin-svelte
+npm install -D @brefer/vite-plugin-svelte@next
 ```
 
 For PNPM and YARN, just replace `npm install` with `pnpm add` or `yarn add` in the commands above.
@@ -20,34 +24,13 @@ For PNPM and YARN, just replace `npm install` with `pnpm add` or `yarn add` in t
 
 ## Usage
 
-### @brefer/preprocessor
-
-```js
-// svelte.config.js
-import { vitePreprocess } from "@sveltejs/vite-plugin-svelte";
-import { breferPreprocess } from "@brefer/preprocessor";
-
-export default {
-	preprocess: [vitePreprocess(), breferPreprocess()],
-};
-```
-
-### @brefer/vite-plugin-svelte
-
-```js
-// vite.config.js
-import { defineConfig } from "vite";
-import { brefer } from "@brefer/vite-plugin-svelte";
-
-export default defineConfig({
-	plugins: [brefer()],
-});
-```
+Brefer is really easy to set up, you only need few lines of code in your Svelte or Vite config files!
+See the configuration to be able use the [preprocessor](./packages/preprocessor/readme.md#usage) or the [Vite plugin](./packages/vite-plugin-svelte/readme.md#usage).
 
 ## What is it?
 
-Brefer is a monorepository containing both a Svelte preprocessor and a Vite plugin to shorten the new Svelte 5 syntax for handling reactivity (hence the name "Brefer", made from "Breferkai" which means "Short" in Japanese).
-If you want to solely process `.svelte` files, using `@brefer/preprocessor` will be enough. If you also want to preprocess `.svelte.js` files, you will need to use `@brefer/vite-plugin-svelte` instead.
+Brefer is a monorepository containing both a Svelte preprocessor and a Vite plugin to shorten the new Svelte 5 syntax for handling reactivity (hence the name "Brefer", made from "Bref" which means "Brief" in French and the suffix "er", which means "more").
+If you want to solely process `.svelte` files, using [@brefer/preprocessor](./packages/preprocessor/readme.md) will be enough. If you also want to preprocess `.svelte.js` files, you will need to use [@brefer/vite-plugin-svelte](./packages/vite-plugin-svelte/readme.md) instead.
 
 ## Why?
 
@@ -58,11 +41,13 @@ If you were delighted, Brefer is probably not for you. Personally, I didn't want
 
 With Brefer, I opted for a more straightforward syntax:
 
-> Prefixing your variables with `s$` makes them a state.
-> Prefixing your variables with `d$` makes them derived.
-> An arrow function (or a scope block) preceeded by the `e$:` label creates an effect.
+> Variables defined with `let` are reactive by default
 
-That is really all you have to know (currently).
+> Using the rune `$(...)` creates `$derived` values
+
+> Using the rune `$$(() => {...})` creates an effect
+
+That is (almost) all you have to know.
 
 ### Here are some examples
 
@@ -70,27 +55,24 @@ That is really all you have to know (currently).
 
 ```svelte
 <script>
-  let count = $state(0);
-  let double = $derived($count * 2)
+	let count = $state(0);
+	let double = $derived($count * 2);
 </script>
 
-<button on:click={() => count++}>
-  clicks: {count}
-  double: {double}
-</button>
+<button on:click={() => count++}> clicks: {count} double: {double}</button>
 ```
 
 #### With Brefer
 
 ```svelte
 <script>
-  let s$count = 0;
-  let d$double = s$count * 2;
+  let count = 0;
+  let double = $(count * 2);
 </script>
 
-<button on:click={() => s$count++}>
-  clicks: {s$count}
-  double: {d$double}
+<button on:click={() => count++}>
+  clicks: {count}
+  double: {double}
 </button>
 ```
 
@@ -121,11 +103,11 @@ That is really all you have to know (currently).
 ```svelte
 <script>
   class Counter {
-    s$count = 0;
-    d$double = this.s$count * 2;
+    count = 0;
+    double = $(this.count * 2);
 
     increment() {
-      this.s$count++;
+      this.count++;
     }
   }
 
@@ -133,60 +115,22 @@ That is really all you have to know (currently).
 </script>
 
 <button on:click={() => counter.increment()}>
-  clicks: {counter.$count}
-  double: {counter.$double}
+  clicks: {counter.count}
+  double: {counter.double}
 </button>
-```
-
-> I somewhat have JQuery flashbacks... I don't want to see `$` everywhere again (not that it wasn't the case with Svelte already)! 😭
-
-### About that...
-
-If you really hate the default prefixes, you can change them to something else (as long as it is a valid JS variable name) by passing the `prefixes` option to the preprocessor or Vite plugin:
-
-#### Preprocessor
-
-```js
-// svelte.config.js
-import { vitePreprocess } from "@sveltejs/vite-plugin-svelte";
-import { breferPreprocess } from "@brefer/preprocessor";
-
-export default {
-	preprocess: [
-		vitePreprocess(),
-		breferPreprocess({
-			prefixes: { state: "state_", derived: "derived_", effect: "effect" },
-		}),
-	],
-};
-```
-
-#### Vite plugin
-
-```js
-// vite.config.js
-import { defineConfig } from "vite";
-import { brefer } from "@brefer/vite-plugin-svelte";
-
-export default defineConfig({
-	plugins: [
-		brefer({
-			prefixes: { state: "state_", derived: "derived_", effect: "effect" },
-		}),
-	],
-});
 ```
 
 ## Typescript
 
-Brefer supports typescript out of the box as it uses [@typescript-eslint/parser](https://typescript-eslint.io/packages/parser/) to parse the script content for `.svelte` files and `.svelte.[js|ts]` files.
+Brefer supports typescript out of the box as it uses [@babel/parser](https://babeljs.io/docs/babel-parser) to parse the script content for `.svelte` files with the `lang="ts"` attribute and `.svelte.ts` files.
+
+Otherwise, it uses [Esprima Javascript Parser](https://www.npmjs.com/package/esprima).
 
 ## Pros and cons
 
 ### Pros
 
 - More concise than Svelte 5's syntax
-- Easier to keep track of reactive variables (they all have the same prefix)
 - Works with Typescript
 - Easy to integrate
 - It's a preprocessor, so you can still use Svelte 5's syntax if you want to
@@ -195,35 +139,47 @@ Brefer supports typescript out of the box as it uses [@typescript-eslint/parser]
 ### Cons
 
 - You have to use a preprocessor
+- Some rare edge cases might induce bugs, especially when deep nested functions are involved
 
 ## Other features
 
-### $effect
+### Defining non-reactive variables
 
-Brefer also allows you to opt for a shorter way to use `$effect`:
+To define non-reactive variables, you have 2 choices:
+
+- Use the `var` or `const` keywords
+
+  > This choice is better for everyday use, e.g for temporary variables or loops
+
+- Use the `$static` rune
+
+  > This choice if better for when the first one can't be used, e.g for class properties, which are defined without any keyword
+
+### `$derived.call`
+
+Brefer takes care of figuring out if you're using a function or an expression inside the `$(...)` rune and will preprocess it to `$derived` or `$derived.call` depending on the result.
+
+For very rare edges cases, this could cause bugs, especially with nested callbacks. As an example, if you do that:
 
 ```js
-// Svelte 5
-let scount = $state(1);
-$effect(() => {
-	console.log(count);
-});
-// Brefer
-let s$count = 1;
-e$: {
-	console.log(s$count);
+function foo() {
+	return () => "bar";
 }
-// or, if you need to return a cleanup function
-e$: () => {
-	console.log(s$count);
 
-	return () => {
-		console.log("cleanup");
-	};
-};
+let fizz = $(foo());
 ```
 
-Even better, you can also specify the values you want to untrack:
+Brefer will think you're trying to use an expression and will preprocess it to `let fizz = $derived(foo())` even if `$derived.call` should be used.
+
+Keep that in mind if you don't want to waste hours trying to debug your non-working code.
+
+NB: This bug can also occure with the `$untrack` rune, so watch out.
+
+### The `$untrack` rune
+
+Brefer exposes an `$untrack` rune so you don't have to `import { untrack } from "svelte"` everytime. Brefer takes care of it all.
+
+Moreover, you can pass reactive variables to `$untrack` as a reference, no need to wrap it inside an arrow function. However, keep the problem mentionned in [the previous paragraph](./readme.md#the-untrack-rune) about the potential bugs that it could cause.
 
 ```js
 // Svelte 5
@@ -231,51 +187,35 @@ import { untrack } from "svelte";
 
 let count = $state(1);
 let double = $derived(count * 2);
-$effect(() => {
+
+const cleanup = $effect.root(() => {
 	console.log(
 		count,
 		untrack(() => double)
 	);
+
+	return () => {
+		console.log("cleanup");
+	};
 });
 // Brefer
-let s$count = 1;
-let d$double = s$count * 2;
-e$: d$double, // untracked, values, coma, separated,
-	() => {
-		console.log(s$count, d$double);
+let count = 1;
+let double = $(count * 2);
+
+const cleanup = $$.root(() => {
+	console.log(count, $untrack(double));
+
+	return () => {
+		console.log("cleanup");
 	};
+});
 ```
 
-When you specify values to untrack, you have to use an arrow function as scope blocks can't be used in sequential expressions.
+### The `$frozen` rune
 
-### Better DX (Developer Experience)
+To be able to define with `$state.frozen` given the shorten syntax for `$state`'s, Brefer exposes a `$frozen` rune.
 
-If the syntax looks too ugly for you (hard to see the name of the variables due to the prefix) and you're a VSCode user, you can use the [Highlight VSCode extension](https://marketplace.visualstudio.com/items?itemName=fabiospampinato.vscode-highlight) to define a new syntax highlighting rule.
-For example, if you want to have the prefix at 25% opacity and underlined (you can check the full styles list [here](https://code.visualstudio.com/api/references/vscode-api#DecorationRenderOptions).), but not the entire variable, you can download the extension and add this in your `settings.json`:
-
-```json
-"highlight.regexes": {
-  "(?<![_\\$\\.'\"`]|[:alnum:]|//|// |/\\*|/\\* | \\*| \\* )([sde]\\$)(?=[_\\$]*|[:alnum]*)": {
-    "filterFileRegex": ".*\\.svelte(\\.js|\\.ts)?$",
-    "decorations": [
-      {
-        // Change the prefix's style here
-        "opacity": "0.25",
-        "textDecoration": "underline"
-      }
-    ]
-  }
-}
-```
-
-It looks like this in my IDE:
-
-![Highlight example](assets/highlight_example.png)
-
-This extension uses Regex to find the token to change the style of. I know, this regular expression looks atrocious but the part that interests us is pretty short: `([sde]\\$)`.
-
-It's pretty easy to translate: I want one of the characters: "s", "d", "e" (`[sde]`), followed by a "\$" sign (`\\$`).
-If you understand this, you can further customize the style of your prefixes. For example, you could have 3 different styles for each of your prefixes. In that case, you will need 3 different regular expressions (one for each `(s\\$)`, `(d\\$)` and `(e\\$)`).
+Use it just as you would use `$state.frozen`.
 
 ## Contribute
 
