@@ -4,7 +4,7 @@
 	"description": "Svelte 5 preprocessor to shorten runes syntax.",
 	"author": "KilDesu",
 	"license": "MIT",
-	"version": "2.0.0-alpha.1.0",
+	"version": "2.0.0-alpha.2",
 	"type": "module",
 	"engines": {
 		"node": "^18.0.0 || >=20",
@@ -37,15 +37,16 @@
 		"vite-plugin-svelte"
 	],
 	"devDependencies": {
-		"@types/node": "^20.10.6",
+		"@types/node": "^20.11.17",
 		"eslint": "^8.56.0",
-		"prettier": "^3.1.1",
+		"prettier": "^3.2.5",
+		"svelte": "5.0.0-next.52",
 		"typescript": "^5.3.3",
-		"vitest": "^1.1.1",
-		"svelte": "5.0.0-next.26"
+		"vitest": "^1.2.2"
 	},
 	"scripts": {
 		"test": "vitest",
-		"generate:types": "pnpm --filter \"./packages/*\" --parallel generate:types"
+		"generate:types": "pnpm --filter \"./packages/*\" --parallel generate:types",
+		"generate:tests": "node ./scripts/generate-module-tests.js"
 	}
 }
