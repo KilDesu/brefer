@@ -1,20 +1,4 @@
-declare module '@brefer/preprocessor' {
-	/**
-	 * Preprocesses the content of the script tag in .svelte files.
-	 * @param content - The content of the script tag
-	 * @param filename - The name of the file
-	 * @param lang - The name of the file
-	 */
-	export function preprocessScript(content: string, filename?: string | undefined, lang?: string | boolean | undefined): import("recast/lib/printer.js").PrintResultType;
-	/**
-	 * Preprocessor for Brefer syntax, using variable prefixes to handle reactivity.
-	 * It avoids the need to call `$state`, `$derived` or `$effect` runes every time.
-	 *
-	 * If you also want to preprocess .svelte.js files, use `@brefer/vite-plugin-svelte` instead.
-	 *
-	 * */
-	export function breferPreprocess(): import("svelte/compiler").PreprocessorGroup;
-}/**
+/**
  * Corresponds to Svelte 5's `$derived` rune.
  *
  * Declares derived state, i.e. one that depends on other state variables.
@@ -188,5 +172,3 @@ declare function $static<T>(value: T): T;
  */
 declare function $frozen<T>(initial: T): Readonly<T>;
 declare function $frozen<T>(): Readonly<T> | undefined;
-
-//# sourceMappingURL=index.d.ts.map

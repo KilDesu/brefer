@@ -1,6 +1,4 @@
-import { BreferConfig as BreferSharedConfig } from "@brefer/shared";
-
-export interface BreferConfig extends BreferSharedConfig {
+export interface BreferConfig {
 	include?: string[];
 	exclude?: string[];
 }
