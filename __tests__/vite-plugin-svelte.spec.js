@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { brefer } from "./packages/vite-plugin-svelte/src/index.js";
+import { brefer } from "./src/index.js";
 import fs from "node:fs/promises";
 import { format } from "prettier";
 

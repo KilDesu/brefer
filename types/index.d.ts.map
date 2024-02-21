@@ -3,6 +3,7 @@
 	"file": "index.d.ts",
 	"names": [
 		"BreferConfig",
+		"breferPreprocess",
 		"brefer"
 	],
 	"sources": [
@@ -13,5 +14,5 @@
 		null,
 		null
 	],
-	"mappings": ";kBAAiBA,YAAYA;;;;;;;;;;iBCabC,MAAMA"
+	"mappings": ";kBAGiBA,YAAYA;;;;;;;;;;;iBCSbC,gBAAgBA;;;;;;;iBAmBhBC,MAAMA"
 }

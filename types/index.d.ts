@@ -1,5 +1,25 @@
-/**
- * Corresponds to Svelte 5's `$derived` rune.
+declare module 'brefer' {
+	export interface BreferConfig {
+		include?: string[];
+		exclude?: string[];
+	}
+	/**
+	 * Preprocessor for Brefer syntax, using variable prefixes to handle reactivity.
+	 * It avoids the need to call `$state`, `$derived` or `$effect` runes every time.
+	 *
+	 * If you also want to preprocess .svelte.js files, use `brefer` instead.
+	 *
+	 * */
+	export function breferPreprocess(): import("svelte/compiler").PreprocessorGroup;
+	/**
+	 * Brefer vite plugin for svelte. It allows to preprocess .svelte.js files as well as .svelte files.
+	 *
+	 * Prefer the use of `breferPreprocess` if you want to preprocess .svelte files only.
+	 *
+	 * */
+	export function brefer(config?: BreferConfig): import("vite").Plugin;
+}/**
+ * Corresponds to Svelte 5's `$derived` rune. If a function is passed as an argument, `$derived.call` will be used instead.
  *
  * Declares derived state, i.e. one that depends on other state variables.
  * The expression inside `$(...)` should be free of side-effects.
@@ -14,25 +34,6 @@
  * @param expression The derived state expression
  */
 declare function $<T>(expression: T): T;
-/**
- * Corresponds to Svelte 5's `$derived.call` rune.
- *
- * Sometimes you need to create complex derivations that don't fit inside a short expression.
- * In these cases, you can use `$derived.call` which accepts a function as its argument.
- *
- * Example:
- * ```ts
- * let total = $derived.call(() => {
- *   let result = 0;
- *	 for (const n of numbers) {
- *	   result += n;
- *   }
- *   return result;
- * });
- * ```
- *
- * https://svelte-5-preview.vercel.app/docs/runes#$derived-call
- */
 declare function $<T>(fn: () => T): T;
 
 /**
@@ -172,3 +173,5 @@ declare function $static<T>(value: T): T;
  */
 declare function $frozen<T>(initial: T): Readonly<T>;
 declare function $frozen<T>(): Readonly<T> | undefined;
+
+//# sourceMappingURL=index.d.ts.map

@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { preprocess } from "svelte/compiler";
-import { breferPreprocess } from "./packages/preprocessor/src/index.js";
+import { breferPreprocess } from "./src/index.js";
 import fs from "node:fs/promises";
 import { format } from "prettier";
 

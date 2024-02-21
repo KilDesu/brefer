@@ -13,11 +13,11 @@ import { handleFrozen } from "./handlers/new-runes.js";
  * Preprocesses the content of the script tag in .svelte files.
  * @param {string} content - The content of the script tag
  * @param {string} [filename] - The name of the file
- * @param {string | boolean} [lang] - The name of the file
+ * @param {string | boolean} [lang] - The language of the file
  */
 export function preprocessScript(content, filename, lang) {
 	const parser =
-		typeof lang === "string" && ["ts", "typescript"].includes(lang)
+		typeof lang === "string" && ["ts", "typescript"].includes(lang.toLowerCase())
 			? TSParser
 			: EsprimaParser;
 
@@ -64,21 +64,4 @@ export function preprocessScript(content, filename, lang) {
 	});
 
 	return print(ast);
-}
-
-/**
- * Preprocessor for Brefer syntax, using variable prefixes to handle reactivity.
- * It avoids the need to call `$state`, `$derived` or `$effect` runes every time.
- *
- * If you also want to preprocess .svelte.js files, use `@brefer/vite-plugin-svelte` instead.
- *
- * @returns { import("svelte/compiler").PreprocessorGroup }
- */
-export function breferPreprocess() {
-	return {
-		name: "brefer-preprocessor",
-		async script({ content, filename, attributes }) {
-			return preprocessScript(content, filename, attributes.lang);
-		},
-	};
 }

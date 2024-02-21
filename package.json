@@ -10,11 +10,16 @@
 		"pnpm": "^8.6.3"
 	},
 	"module": "src/index.js",
-	"main": "dist/main.js",
+	"main": "src/index.js",
+	"types": "types/index.d.ts",
+	"files": [
+		"src",
+		"types"
+	],
 	"exports": {
 		".": {
 			"default": "./src/index.js",
-			"types": "./src/types.d.ts"
+			"types": "./types.d.ts"
 		},
 		"./package.json": "./package.json"
 	},
@@ -35,17 +40,22 @@
 		"vite",
 		"vite-plugin-svelte"
 	],
+	"dependencies": {
+		"@babel/parser": "^7.23.9",
+		"recast": "^0.23.4"
+	},
 	"devDependencies": {
 		"@types/node": "^20.11.17",
 		"eslint": "^8.56.0",
 		"prettier": "^3.2.5",
 		"svelte": "5.0.0-next.52",
 		"typescript": "^5.3.3",
-		"vitest": "^1.2.2"
+		"vitest": "^1.2.2",
+		"vite": "^5.1.1"
 	},
 	"scripts": {
 		"test": "vitest",
-		"generate:types": "pnpm --filter \"./packages/*\" --parallel generate:types",
+		"generate:types": "dts-buddy -m \"brefer:src/public.d.ts\"",
 		"generate:tests": "node ./scripts/generate-module-tests.js"
 	}
 }

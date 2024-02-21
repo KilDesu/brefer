@@ -1,21 +1,13 @@
 # Brefer project for Svelte 5 preprocessing
 
-This is the monorepository for the Brefer project.
+## What is it?
 
-The project includes both a Vite plugin and a more simple, yet still powerful processor to be able to use a simpler and more concise syntax in Svelte 5.
+Brefer is a preprocessor to shorten the new Svelte 5 syntax for handling reactivity (hence the name "Brefer", made from "Bref" which means "Brief" in French and the suffix "er", which means "more").
 
 ## Installation
 
-### Svelte preprocessor
-
 ```bash
-npm install -D @brefer/preprocessor@next
-```
-
-### Vite plugin for Svelte
-
-```bash
-npm install -D @brefer/vite-plugin-svelte@next
+npm install -D brefer
 ```
 
 For PNPM and YARN, just replace `npm install` with `pnpm add` or `yarn add` in the commands above.
@@ -24,13 +16,59 @@ For PNPM and YARN, just replace `npm install` with `pnpm add` or `yarn add` in t
 
 ## Usage
 
-Brefer is really easy to set up, you only need few lines of code in your Svelte or Vite config files!
-See the configuration to be able use the [preprocessor](./packages/preprocessor/readme.md#usage) or the [Vite plugin](./packages/vite-plugin-svelte/readme.md#usage).
+### Basic usage
 
-## What is it?
+```js
+// vite.config.js
+import { defineConfig } from "vite";
+import { brefer } from "brefer";
 
-Brefer is a monorepository containing both a Svelte preprocessor and a Vite plugin to shorten the new Svelte 5 syntax for handling reactivity (hence the name "Brefer", made from "Bref" which means "Brief" in French and the suffix "er", which means "more").
-If you want to solely process `.svelte` files, using [@brefer/preprocessor](./packages/preprocessor/readme.md) will be enough. If you also want to preprocess `.svelte.js` files, you will need to use [@brefer/vite-plugin-svelte](./packages/vite-plugin-svelte/readme.md) instead.
+export default defineConfig({
+	plugins: [brefer()],
+});
+```
+
+### Options
+
+You can pass options to the plugin. Those options contain 2 properties: `include` and `exclude`. You might already be familiar with them as a lot of other frameworks also use it.
+
+You can check the [documentation](https://rollupjs.org/configuration-options/#watch-exclude) on Rollup's website.
+
+```js
+// vite.config.js
+import { defineConfig } from "vite";
+import { brefer } from "@brefer/vite-plugin-svelte";
+
+export default defineConfig({
+	plugins: [
+		brefer({
+			include: [
+				// Files to preprocess
+				"src/**/*.svelte",
+				"src/**/*.svelte.js",
+			],
+			exclude: [
+				// Files you don't want preprocessed
+				"tests/**/*.svelte",
+			],
+		}),
+	],
+});
+```
+
+### Preprocess `.svelte` files only
+
+If you don't want to use a Vite plugin and rather use Svelte's preprocess API, you can directly import the `breferPreprocess` function and use it in your Svelte config:
+
+```js
+// svelte.config.js
+import { vitePreprocess } from "@sveltejs/vite-plugin-svelte";
+import { breferPreprocess } from "@brefer/preprocessor";
+
+export default {
+	preprocess: [vitePreprocess(), breferPreprocess()],
+};
+```
 
 ## Why?
 
@@ -45,62 +83,75 @@ With Brefer, I opted for a more straightforward syntax:
 
 > Using the rune `$(...)` creates `$derived` values
 
-> Using the rune `$$(() => {...})` creates an effect
+> Using the rune `$$(() => {...})` creates `$effect` expressions
+
+> All subrunes for `$effect` (like `$effect.root` for example) are usable with `$$`
 
 That is (almost) all you have to know.
 
 ### Here are some examples
 
-#### With Svelte 5
-
-```svelte
+<table>
+<tr>
+	<td><b>With Svelte 5</b></td>
+	<td><b>With Brefer</b></td>
+</tr>
+<tr>
+<td>
+	
+```html
 <script>
 	let count = $state(0);
 	let double = $derived($count * 2);
 </script>
 
-<button on:click={() => count++}> clicks: {count} double: {double}</button>
+<button on:click={() => count++}>
+	clicks: {count} / double: {double}
+</button>
 ```
 
-#### With Brefer
+</td>
+<td>
 
-```svelte
+```html
 <script>
-  let count = 0;
-  let double = $(count * 2);
+let count = 0;
+let double = $(count * 2);
 </script>
 
 <button on:click={() => count++}>
-  clicks: {count}
-  double: {double}
+	clicks: {count} / double: {double}
 </button>
 ```
 
-#### With Svelte 5
+</td>
+</tr>
+<tr>
+<td>
 
-```svelte
+```html
 <script>
-  class Counter {
-    count = $state(0);
-    double = $derived(this.count * 2);
+class Counter {
+	count = $state(0);
+	double = $derived(this.count * 2);
 
-    increment() {
-      this.count++;
-    }
-  }
+	increment() {
+	this.count++;
+	}
+}
 
-  let counter = new Counter();
+let counter = new Counter();
 </script>
 
 <button on:click={() => counter.increment()}>
-  clicks: {counter.count}
-  double: {counter.double}
+	clicks: {counter.count} / double: {counter.double}
 </button>
 ```
+		
+</td>
+<td>
 
-#### With Brefer
-
-```svelte
+```html
 <script>
   class Counter {
     count = 0;
@@ -115,10 +166,13 @@ That is (almost) all you have to know.
 </script>
 
 <button on:click={() => counter.increment()}>
-  clicks: {counter.count}
-  double: {counter.double}
+  clicks: {counter.count} / double: {counter.double}
 </button>
 ```
+
+</td>
+</tr>
+</table>
 
 ## Typescript
 
@@ -179,10 +233,17 @@ NB: This bug can also occure with the `$untrack` rune, so watch out.
 
 Brefer exposes an `$untrack` rune so you don't have to `import { untrack } from "svelte"` everytime. Brefer takes care of it all.
 
-Moreover, you can pass reactive variables to `$untrack` as a reference, no need to wrap it inside an arrow function. However, keep the problem mentionned in [the previous paragraph](./readme.md#the-untrack-rune) about the potential bugs that it could cause.
+Moreover, you can pass reactive variables to `$untrack` as a reference, no need to wrap it inside an arrow function. However, keep the problem mentionned in [the previous paragraph](./readme.md#derivedcall) about the potential bugs that it could cause.
+
+<table>
+<tr>
+<td><b>Svelte 5</b></td>
+<td><b>Brefer</b></td>
+</tr>
+<tr>
+<td>
 
 ```js
-// Svelte 5
 import { untrack } from "svelte";
 
 let count = $state(1);
@@ -198,18 +259,30 @@ const cleanup = $effect.root(() => {
 		console.log("cleanup");
 	};
 });
-// Brefer
+```
+
+</td>
+<td>
+
+```js
 let count = 1;
 let double = $(count * 2);
 
 const cleanup = $$.root(() => {
-	console.log(count, $untrack(double));
+	console.log(
+		count,
+		$untrack(double)
+	);
 
 	return () => {
 		console.log("cleanup");
 	};
 });
 ```
+
+</td>
+</tr>
+</table>
 
 ### The `$frozen` rune
 
