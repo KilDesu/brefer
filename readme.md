@@ -7,7 +7,7 @@ Brefer is a preprocessor to shorten the new Svelte 5 syntax for handling reactiv
 ## Installation
 
 ```bash
-npm install -D brefer
+npm install -D brefer@next
 ```
 
 For PNPM and YARN, just replace `npm install` with `pnpm add` or `yarn add` in the commands above.
