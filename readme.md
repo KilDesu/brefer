@@ -205,6 +205,8 @@ To define non-reactive variables, you have 2 choices:
 
   > This choice is better for everyday use, e.g for temporary variables or loops
 
+  NB: if you use the `var` keyword, Brefer will preprocess it to use `let` instead
+
 - Use the `$static` rune
 
   > This choice if better for when the first one can't be used, e.g for class properties, which are defined without any keyword
