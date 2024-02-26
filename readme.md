@@ -18,12 +18,29 @@ For PNPM and YARN, just replace `npm install` with `pnpm add` or `yarn add` in t
 
 ### Basic usage
 
+To avoid having Svelte's compiler shout at you for using "illegal variable names" (because Brefer uses `$` and `$$` variables), you have to add the preprocessor to your `svelte.config.js`, even if you want to use the Vite plugin alone:
+
+```js
+// svelte.config.js
+import { vitePreprocess } from "@sveltejs/vite-plugin-svelte";
+import { breferPreprocess } from "brefer";
+
+export default {
+	preprocess: [vitePreprocess(), breferPreprocess()]
+};
+```
+
+If you don't want to use a Vite plugin and rather use Svelte's preprocess API, you can stop your configuration here and [skip to the next paragraph](#why).
+
+The Brefer's Vite plugin allows you to preprocess Svelte modules (`.svelte.js` files) as well as standard `.svelte` files.
+
 ```js
 // vite.config.js
 import { defineConfig } from "vite";
 import { brefer } from "brefer";
 
 export default defineConfig({
+	// If you use other preprocessors, put brefer first
 	plugins: [brefer()]
 });
 ```
@@ -37,7 +54,7 @@ You can check the [documentation](https://rollupjs.org/configuration-options/#wa
 ```js
 // vite.config.js
 import { defineConfig } from "vite";
-import { brefer } from "@brefer/vite-plugin-svelte";
+import { brefer } from "brefer";
 
 export default defineConfig({
 	plugins: [
@@ -54,20 +71,6 @@ export default defineConfig({
 		})
 	]
 });
-```
-
-### Preprocess `.svelte` files only
-
-If you don't want to use a Vite plugin and rather use Svelte's preprocess API, you can directly import the `breferPreprocess` function and use it in your Svelte config:
-
-```js
-// svelte.config.js
-import { vitePreprocess } from "@sveltejs/vite-plugin-svelte";
-import { breferPreprocess } from "@brefer/preprocessor";
-
-export default {
-	preprocess: [vitePreprocess(), breferPreprocess()]
-};
 ```
 
 ## Why?
@@ -177,24 +180,7 @@ let double = $(count * 2);
 
 ## Typescript
 
-Brefer supports typescript out of the box as it uses [@babel/parser](https://babeljs.io/docs/babel-parser) to parse the script content for `.svelte` files with the `lang="ts"` attribute and `.svelte.ts` files.
-
-Otherwise, it uses [Esprima Javascript Parser](https://www.npmjs.com/package/esprima).
-
-## Pros and cons
-
-### Pros
-
-- More concise than Svelte 5's syntax
-- Works with Typescript
-- Easy to integrate
-- It's a preprocessor, so you can still use Svelte 5's syntax if you want to
-- Can preprocess svelte modules (`.svelte.[js|ts]`)
-
-### Cons
-
-- You have to use a preprocessor
-- Some rare edge cases might induce bugs, especially when deep nested functions are involved
+Brefer supports typescript out of the box as it uses [@babel/parser](https://babeljs.io/docs/babel-parser) to parse the script content of `.svelte` files and `.svelte.[js|ts]` modules.
 
 ## Other features
 
@@ -206,7 +192,7 @@ To define non-reactive variables, you have 2 choices:
 
   > This choice is better for everyday use, e.g for temporary variables or loops
 
-  NB: if you use the `var` keyword, Brefer will preprocess it to use `let` instead
+  **NB:** if you use the `var` keyword, Brefer will preprocess it to use `let` instead
 
 - Use the `$static` rune
 
@@ -236,7 +222,7 @@ NB: This bug can also occure with the `$untrack` rune, so watch out.
 
 Brefer exposes an `$untrack` rune so you don't have to `import { untrack } from "svelte"` everytime. Brefer takes care of it all.
 
-Moreover, you can pass reactive variables to `$untrack` as a reference, no need to wrap it inside an arrow function. However, keep the problem mentionned in [the previous paragraph](./readme.md#derivedcall) about the potential bugs that it could cause.
+Moreover, you can pass reactive variables to `$untrack` as a reference, no need to wrap it inside an arrow function. However, keep the problem mentionned in [the previous paragraph](#derivedby) about the potential bugs that it could cause.
 
 <table>
 <tr>
@@ -286,9 +272,25 @@ const cleanup = $$.root(() => {
 
 ### The `$frozen` rune
 
-To be able to define with `$state.frozen` given the shorten syntax for `$state`'s, Brefer exposes a `$frozen` rune.
+To be able to define variables with `$state.frozen` given the shorten syntax for `$state`'s, Brefer exposes a `$frozen` rune.
 
 Use it just as you would use `$state.frozen`.
+
+## Pros and cons
+
+### Pros
+
+- More concise than Svelte 5's syntax
+- Works with Typescript
+- Easy to integrate
+- It's a preprocessor, so you can still use Svelte 5's syntax if you want to
+- Can preprocess svelte modules (`.svelte.[js|ts]`)
+
+### Cons
+
+- You have to use a preprocessor
+- Some rare edge cases might induce bugs, especially when deep nested functions are involved
+- Even if you want to use the Vite plugin alone, you still have to put `breferPreprocess` in your Svelte config for the linter to understand
 
 ## Contribute
 
