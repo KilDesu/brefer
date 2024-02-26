@@ -34,6 +34,7 @@ export function brefer(config = {}) {
 
 	return {
 		name: "vite-plugin-svelte-brefer",
+  enforce: "pre",
 		async transform(code, id) {
 			if (!shouldProcess(id)) {
 				return;
