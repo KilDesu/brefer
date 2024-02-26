@@ -24,7 +24,7 @@ import { defineConfig } from "vite";
 import { brefer } from "brefer";
 
 export default defineConfig({
-	plugins: [brefer()],
+	plugins: [brefer()]
 });
 ```
 
@@ -45,14 +45,14 @@ export default defineConfig({
 			include: [
 				// Files to preprocess
 				"src/**/*.svelte",
-				"src/**/*.svelte.js",
+				"src/**/*.svelte.js"
 			],
 			exclude: [
 				// Files you don't want preprocessed
-				"tests/**/*.svelte",
-			],
-		}),
-	],
+				"tests/**/*.svelte"
+			]
+		})
+	]
 });
 ```
 
@@ -66,7 +66,7 @@ import { vitePreprocess } from "@sveltejs/vite-plugin-svelte";
 import { breferPreprocess } from "@brefer/preprocessor";
 
 export default {
-	preprocess: [vitePreprocess(), breferPreprocess()],
+	preprocess: [vitePreprocess(), breferPreprocess()]
 };
 ```
 
@@ -106,9 +106,10 @@ That is (almost) all you have to know.
 </script>
 
 <button on:click={() => count++}>
-	clicks: {count} / double: {double}
+clicks: {count} / double: {double}
 </button>
-```
+
+````
 
 </td>
 <td>
@@ -122,7 +123,7 @@ let double = $(count * 2);
 <button on:click={() => count++}>
 	clicks: {count} / double: {double}
 </button>
-```
+````
 
 </td>
 </tr>
@@ -131,42 +132,42 @@ let double = $(count * 2);
 
 ```html
 <script>
-class Counter {
-	count = $state(0);
-	double = $derived(this.count * 2);
+	class Counter {
+		count = $state(0);
+		double = $derived(this.count * 2);
 
-	increment() {
-	this.count++;
+		increment() {
+			this.count++;
+		}
 	}
-}
 
-let counter = new Counter();
+	let counter = new Counter();
 </script>
 
-<button on:click={() => counter.increment()}>
-	clicks: {counter.count} / double: {counter.double}
+<button on:click="{()" ="">
+	counter.increment()}> clicks: {counter.count} / double: {counter.double}
 </button>
 ```
-		
+
 </td>
 <td>
 
 ```html
 <script>
-  class Counter {
-    count = 0;
-    double = $(this.count * 2);
+	class Counter {
+		count = 0;
+		double = $(this.count * 2);
 
-    increment() {
-      this.count++;
-    }
-  }
+		increment() {
+			this.count++;
+		}
+	}
 
-  let counter = new Counter();
+	let counter = new Counter();
 </script>
 
-<button on:click={() => counter.increment()}>
-  clicks: {counter.count} / double: {counter.double}
+<button on:click="{()" ="">
+	counter.increment()}> clicks: {counter.count} / double: {counter.double}
 </button>
 ```
 
@@ -211,9 +212,9 @@ To define non-reactive variables, you have 2 choices:
 
   > This choice if better for when the first one can't be used, e.g for class properties, which are defined without any keyword
 
-### `$derived.call`
+### `$derived.by`
 
-Brefer takes care of figuring out if you're using a function or an expression inside the `$(...)` rune and will preprocess it to `$derived` or `$derived.call` depending on the result.
+Brefer takes care of figuring out if you're using a function or an expression inside the `$(...)` rune and will preprocess it to `$derived` or `$derived.by` depending on the result.
 
 For very rare edges cases, this could cause bugs, especially with nested callbacks. As an example, if you do that:
 
@@ -225,7 +226,7 @@ function foo() {
 let fizz = $(foo());
 ```
 
-Brefer will think you're trying to use an expression and will preprocess it to `let fizz = $derived(foo())` even if `$derived.call` should be used.
+Brefer will think you're trying to use an expression and will preprocess it to `let fizz = $derived(foo())` even if `$derived.by` should be used.
 
 Keep that in mind if you don't want to waste hours trying to debug your non-working code.
 
@@ -271,10 +272,7 @@ let count = 1;
 let double = $(count * 2);
 
 const cleanup = $$.root(() => {
-	console.log(
-		count,
-		$untrack(double)
-	);
+	console.log(count, $untrack(double));
 
 	return () => {
 		console.log("cleanup");

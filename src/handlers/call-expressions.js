@@ -10,13 +10,11 @@ const { Identifier, MemberExpression } = types.namedTypes;
  */
 export function handleDerived(callee, args) {
 	if (args.length !== 1) {
-		throw new Error(
-			"Derived values must have at least, and at most, 1 argument."
-		);
+		throw new Error("Derived values must have at least, and at most, 1 argument.");
 	}
 
 	if (isFunctionArg(args[0]) || Identifier.check(args[0])) {
-		callee.name = "$derived.call";
+		callee.name = "$derived.by";
 	} else {
 		callee.name = "$derived";
 	}

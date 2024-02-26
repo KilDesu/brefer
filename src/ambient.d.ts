@@ -1,5 +1,5 @@
 /**
- * Corresponds to Svelte 5's `$derived` rune. If a function is passed as an argument, `$derived.call` will be used instead.
+ * Corresponds to Svelte 5's `$derived` rune. If a function is passed as an argument, `$derived.by` will be used instead.
  *
  * Declares derived state, i.e. one that depends on other state variables.
  * The expression inside `$(...)` should be free of side-effects.

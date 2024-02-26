@@ -1,5 +1,5 @@
 let count: number = $state(1);
 
-let double: number = $derived.call(function () {
+let double: number = $derived.by(function () {
 	count * 2;
 });

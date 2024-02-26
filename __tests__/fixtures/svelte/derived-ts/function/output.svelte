@@ -5,5 +5,5 @@
 		return count * 2;
 	}
 
-	let double: number = $derived.call(doubleCount);
+	let double: number = $derived.by(doubleCount);
 </script>
