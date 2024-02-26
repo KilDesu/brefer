@@ -59,8 +59,6 @@ export function brefer(config = {}) {
 			if (id.endsWith(".svelte.js") || id.endsWith(".svelte.ts")) {
 				const preprocessed = preprocessScript(code, id);
 
-				console.log(preprocessed.code);
-
 				return {
 					code: preprocessed.code,
 					map: preprocessed.map,
