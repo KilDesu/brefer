@@ -142,7 +142,7 @@ declare function $static<T>(value: T): T;
  *   };
  * </script>
  *
- * <button on:click={addItem}>
+ * <button onclick={addItem}>
  *   {items.join(', ')}
  * </button>
  * ```

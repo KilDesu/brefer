@@ -108,7 +108,7 @@ That is (almost) all you have to know.
 	let double = $derived($count * 2);
 </script>
 
-<button on:click={() => count++}>
+<button onclick="{() => count++}">
 clicks: {count} / double: {double}
 </button>
 
@@ -123,7 +123,7 @@ let count = 0;
 let double = $(count * 2);
 </script>
 
-<button on:click={() => count++}>
+<button onclick="{() => count++}">
 	clicks: {count} / double: {double}
 </button>
 ````
@@ -147,8 +147,8 @@ let double = $(count * 2);
 	let counter = new Counter();
 </script>
 
-<button on:click="{()" ="">
-	counter.increment()}> clicks: {counter.count} / double: {counter.double}
+<button onclick="{() => counter.increment()}">
+	clicks: {counter.count} / double: {counter.double}
 </button>
 ```
 
@@ -169,8 +169,8 @@ let double = $(count * 2);
 	let counter = new Counter();
 </script>
 
-<button on:click="{()" ="">
-	counter.increment()}> clicks: {counter.count} / double: {counter.double}
+<button onclick="{() => counter.increment()}">
+	clicks: {counter.count} / double: {counter.double}
 </button>
 ```
 

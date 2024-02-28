@@ -1,4 +1,4 @@
-declare module "brefer" {
+declare module 'brefer' {
 	export interface BreferConfig {
 		include?: string[];
 		exclude?: string[];
@@ -18,7 +18,7 @@ declare module "brefer" {
 	 *
 	 * */
 	export function brefer(config?: BreferConfig): import("vite").Plugin;
-} /**
+}/**
  * Corresponds to Svelte 5's `$derived` rune. If a function is passed as an argument, `$derived.by` will be used instead.
  *
  * Declares derived state, i.e. one that depends on other state variables.
@@ -162,7 +162,7 @@ declare function $static<T>(value: T): T;
  *   };
  * </script>
  *
- * <button on:click={addItem}>
+ * <button onclick={addItem}>
  *   {items.join(', ')}
  * </button>
  * ```

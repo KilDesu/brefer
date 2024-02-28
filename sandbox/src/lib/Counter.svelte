@@ -8,6 +8,6 @@
 	});
 </script>
 
-<button on:click={() => counter.increment()}>
+<button onclick={() => counter.increment()}>
 	count is {counter.count}, double is {counter.double}
 </button>
