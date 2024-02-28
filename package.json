@@ -3,7 +3,7 @@
 	"description": "Svelte 5 preprocessor to shorten runes syntax.",
 	"author": "KilDesu",
 	"license": "MIT",
-	"version": "2.0.0-alpha.5",
+	"version": "2.0.0-alpha.6",
 	"type": "module",
 	"engines": {
 		"node": "^18.0.0 || >=20",
