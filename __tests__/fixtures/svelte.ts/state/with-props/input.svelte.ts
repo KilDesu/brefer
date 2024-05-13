@@ -1,3 +1,5 @@
+let { hello, world }: { hello: string; world: string } = $props();
+
 var foo: string = "bar";
 
 let arr: number[] = [1, 2, 3];
