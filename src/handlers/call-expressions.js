@@ -43,7 +43,7 @@ export function handleEffect(node) {
  * @param {({handleStatic: () => void, handleState: () => void})} callbacks
  */
 export function handleCallExpression(init, callbacks) {
-	const toIgnore = "$state, $derived, $effect".split(", ");
+	const toIgnore = "$state, $derived, $effect, $props".split(", ");
 	const { callee, arguments: args } = init;
 
 	if (Identifier.check(callee)) {
