@@ -8,13 +8,14 @@ const { CallExpression } = types.namedTypes;
 /**
  *
  * @param {import("recast").types.namedTypes.ClassProperty["value"]} init
+ * @param { "const" | "let" | null } kind
  * @param { (newVal: any, arg?: any) => void } cb
  */
-export function handleInitialisation(init, cb) {
+export function handleInitialisation(init, kind, cb) {
 	if (CallExpression.check(init)) {
-		handleCallExpression(init, {
+		handleCallExpression(init, kind, {
 			handleStatic: () => cb(handleStatic(init)),
-			handleState: () => cb("state", init ? [init] : []),
+			handleState: () => cb("state", init ? [init] : [])
 		});
 	} else {
 		cb("state", [init]);
@@ -28,7 +29,5 @@ export function handleInitialisation(init, cb) {
  * @return { T }
  */
 export function replaceInitalisation(newVal, arg) {
-	return /** @type {T} */ (
-		arg ? callExpression(identifier(`$${newVal}`), arg) : newVal
-	);
+	return /** @type {T} */ (arg ? callExpression(identifier(`$${newVal}`), arg) : newVal);
 }

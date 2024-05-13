@@ -40,9 +40,10 @@ export function handleEffect(node) {
 /**
  *
  * @param {import("recast").types.namedTypes.CallExpression} init
+ * @param { "const" | "let" | null } kind
  * @param {({handleStatic: () => void, handleState: () => void})} callbacks
  */
-export function handleCallExpression(init, callbacks) {
+export function handleCallExpression(init, kind, callbacks) {
 	const toIgnore = "$state, $derived, $effect, $props".split(", ");
 	const { callee, arguments: args } = init;
 
@@ -70,5 +71,7 @@ export function handleCallExpression(init, callbacks) {
 		return;
 	}
 
-	callbacks.handleState();
+	if (kind !== "const") {
+		callbacks.handleState();
+	}
 }

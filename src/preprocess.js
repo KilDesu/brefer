@@ -27,7 +27,7 @@ export function preprocessScript(content, filename) {
 		},
 		visitClassProperty(path) {
 			const classDeclaration = path.node;
-			handleDeclarator(classDeclaration);
+			handleDeclarator(classDeclaration, null);
 
 			return this.traverse(path);
 		},
