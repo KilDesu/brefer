@@ -1,5 +1,6 @@
 import { describe, it, expect } from "vitest";
-import { brefer } from "./src/index.js";
+import { preprocess } from "svelte/compiler";
+import { brefer, breferPreprocess } from "./src/index.js";
 import fs from "node:fs/promises";
 import { format } from "prettier";
 
@@ -15,17 +16,20 @@ for (const language of languages) {
 
 			for (const testType of testTypes) {
 				const path = `${fixtures}/${language}/${feature}/${testType}`;
-				const read = async (type) =>
-					await fs.readFile(`${path}/${type}.${language}`, "utf-8");
+				const read = async (type) => await fs.readFile(`${path}/${type}.${language}`, "utf-8");
 
 				const input = await read("input");
 				const output = await read("output");
 
 				it(testType, async () => {
-					const result = await brefer().transform(
-						input,
-						`${path}/input.${language}`
-					);
+					const filename = `${path}/input.${language}`;
+
+					const result =
+						language === "svelte"
+							? await preprocess(input, breferPreprocess(), {
+									filename
+								})
+							: await brefer().transform(input, filename);
 
 					const parser = language === "svelte" ? "html" : "typescript";
 
