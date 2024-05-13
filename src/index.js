@@ -1,8 +1,5 @@
-import { preprocess as sveltePreprocess } from "svelte/compiler";
 import { preprocessScript } from "./preprocess.js";
 import { createFilter } from "vite";
-
-let vitePreprocessed = false;
 
 /**
  * Preprocessor for Brefer syntax, using variable prefixes to handle reactivity.
@@ -13,14 +10,12 @@ let vitePreprocessed = false;
  * @returns { import("svelte/compiler").PreprocessorGroup }
  */
 export function breferPreprocess() {
-	return vitePreprocessed
-		? { name: "brefer-preprocessor" }
-		: {
-				name: "brefer-preprocessor",
-				async script({ content, filename }) {
-					return preprocessScript(content, filename);
-				}
-			};
+	return {
+		name: "brefer-preprocessor",
+		async script({ content, filename }) {
+			return preprocessScript(content, filename);
+		}
+	};
 }
 
 /**
@@ -33,29 +28,16 @@ export function breferPreprocess() {
  * @returns {import("vite").Plugin}
  */
 export function brefer(config = {}) {
-	if (!vitePreprocessed) vitePreprocessed = true;
-
 	const shouldProcess = createFilter(config.include, config.exclude);
 
 	return {
 		name: "vite-plugin-svelte-brefer",
 		enforce: "pre",
 		async transform(code, id) {
-			if (!shouldProcess(id)) {
+			if (!shouldProcess(id) || id.endsWith(".svelte")) {
 				return;
 			}
 
-			if (id.endsWith(".svelte")) {
-				const preprocessed = await sveltePreprocess(code, breferPreprocess(), {
-					filename: id
-				});
-
-				return {
-					code: preprocessed.code,
-					map: /** @type {string} */ (preprocessed.map),
-					id
-				};
-			}
 			if (id.endsWith(".svelte.js") || id.endsWith(".svelte.ts")) {
 				const preprocessed = preprocessScript(code, id);
 
