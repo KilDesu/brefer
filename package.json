@@ -3,15 +3,14 @@
 	"description": "Svelte 5 preprocessor to shorten runes syntax.",
 	"author": "KilDesu",
 	"license": "MIT",
-	"version": "2.0.0-alpha.6",
+	"version": "2.0.0-alpha.7",
 	"type": "module",
 	"engines": {
 		"node": "^18.0.0 || >=20",
-		"pnpm": "^8.6.3"
+		"pnpm": ">=9.1.0"
 	},
 	"module": "src/index.js",
 	"main": "src/index.js",
-	"types": "types/index.d.ts",
 	"files": [
 		"src",
 		"types"
@@ -19,7 +18,7 @@
 	"exports": {
 		".": {
 			"default": "./src/index.js",
-			"types": "./types.d.ts"
+			"types": "./types/index.d.ts"
 		},
 		"./package.json": "./package.json"
 	},
@@ -41,17 +40,17 @@
 		"vite-plugin-svelte"
 	],
 	"dependencies": {
-		"@babel/parser": "^7.23.9",
-		"recast": "^0.23.4"
+		"@babel/parser": "^7.24.5",
+		"recast": "^0.23.7"
 	},
 	"devDependencies": {
-		"@types/node": "^20.11.17",
-		"eslint": "^8.56.0",
+		"@types/node": "^20.12.11",
+		"eslint": "^8.57.0",
 		"prettier": "^3.2.5",
 		"svelte": "5.0.0-next.52",
-		"typescript": "^5.3.3",
-		"vitest": "^1.2.2",
-		"vite": "^5.1.1"
+		"typescript": "^5.4.5",
+		"vite": "^5.2.11",
+		"vitest": "^1.6.0"
 	},
 	"scripts": {
 		"test": "vitest",
