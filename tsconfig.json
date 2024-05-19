@@ -1,23 +1,18 @@
 {
 	"compilerOptions": {
+		"noEmit": true,
+		"target": "ES2022",
+		"module": "Node16",
+		"moduleResolution": "Node16",
 		"strict": true,
-		"sourceMap": false,
-		"module": "commonjs",
-		"moduleResolution": "node",
-		"esModuleInterop": true,
-		"target": "es2018",
-		"lib": ["es2018"],
-		"declaration": true,
-		"skipLibCheck": true,
+		"noUnusedLocals": true,
+		"baseUrl": ".",
+		"resolveJsonModule": true,
+		// see https://devblogs.microsoft.com/typescript/announcing-typescript-4-4-beta/#use-unknown-catch-variables
+		"useUnknownInCatchVariables": false,
+		"allowJs": true,
 		"checkJs": true,
-		"types": ["jest", "node"],
-		"outDir": "dist",
-		"allowJs": true
+		"allowSyntheticDefaultImports": true
 	},
-	"include": ["src/**/*.js"],
-	"exclude": [
-		"**/node_modules/**/*",
-		"**/dist",
-		"**/tests/fixtures/**/*.svelte"
-	]
+	"include": ["src"]
 }
