@@ -18,7 +18,7 @@ For PNPM and YARN, just replace `npm install` with `pnpm add` or `yarn add` in t
 
 ### Basic usage
 
-To avoid having Svelte's compiler shout at you for using "illegal variable names" (because Brefer uses `$` and `$$` variables), you have to add the preprocessor to your `svelte.config.js`, even if you want to use the Vite plugin alone:
+The configuration is pretty easy:
 
 ```js
 // svelte.config.js
@@ -32,7 +32,7 @@ export default {
 
 If you don't want to use a Vite plugin and rather use Svelte's preprocess API, you can stop your configuration here and [skip to the next paragraph](#why).
 
-The Brefer's Vite plugin allows you to preprocess Svelte modules (`.svelte.js` files) as well as standard `.svelte` files.
+The Brefer's Vite plugin allows you to also preprocess Svelte modules (`.svelte.js` files).
 
 ```js
 // vite.config.js
@@ -105,7 +105,7 @@ That is (almost) all you have to know.
 ```html
 <script>
 	let count = $state(0);
-	let double = $derived($count * 2);
+	let double = $derived(count * 2);
 </script>
 
 <button onclick="{() => count++}">
@@ -290,9 +290,8 @@ Use it just as you would use `$state.frozen`.
 
 - You have to use a preprocessor
 - Some rare edge cases might induce bugs, especially when deep nested functions are involved
-- Even if you want to use the Vite plugin alone, you still have to put `breferPreprocess` in your Svelte config for the linter to understand
 
 ## Contribute
 
 If you like the concept and want to contribute, feel free to open an issue or a pull request.
-Also, if you have any idea to improve or extend the syntax, I'm all ears!
+Also, if you have any idea to improve or extend the syntax, I'm all ears (you can contact me on discord @kildesu)!
