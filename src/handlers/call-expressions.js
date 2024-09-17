@@ -1,5 +1,6 @@
 import { types } from "recast";
 import { isFunctionArg } from "./utils.js";
+import { handleStateSubrunes } from "./new-runes.js";
 
 const { Identifier, MemberExpression } = types.namedTypes;
 
@@ -59,8 +60,7 @@ export function handleCallExpression(init, kind, callbacks) {
 			return;
 		} else if (name === "$$") {
 			return;
-		} else if (name === "$frozen") {
-			callee.name = "$state.frozen";
+		} else if (handleStateSubrunes(callee)) {
 			return;
 		}
 	} else if (

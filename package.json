@@ -5,6 +5,7 @@
 	"license": "MIT",
 	"version": "2.0.0-alpha.9",
 	"type": "module",
+	"types": "./types/index.d.ts",
 	"engines": {
 		"node": "^18.0.0 || >=20",
 		"pnpm": ">=9.1.0"
