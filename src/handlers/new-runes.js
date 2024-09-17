@@ -16,10 +16,20 @@ export function handleStatic(init) {
 
 /**
  *
- * @param {import("recast").types.namedTypes.CallExpression} node
+ * @param {import("recast").types.namedTypes.Identifier} callee
+ * @returns {boolean}
  */
-export function handleFrozen(node) {
-	/** @type {import("recast").types.namedTypes.Identifier} */ (
-		node.callee
-	).name = "$state.frozen";
+export function handleStateSubrunes(callee) {
+	let hasChanges = false;
+
+	const subrunes = /** @type {const} */ (["$raw", "$snapshot"]);
+
+	for (const subrune of subrunes) {
+		if (callee.name !== subrune) continue;
+
+		hasChanges = true;
+		callee.name = `$state.${subrune.slice(1)}`;
+	}
+
+	return hasChanges;
 }
