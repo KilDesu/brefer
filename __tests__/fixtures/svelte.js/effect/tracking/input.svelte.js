@@ -2,5 +2,5 @@ let count = 1;
 let double = $(count * 2);
 
 $$(() => {
-  console.log(count, $$.active());
+  console.log(count, $$.tracking());
 });

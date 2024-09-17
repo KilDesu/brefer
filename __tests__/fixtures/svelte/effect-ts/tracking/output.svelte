@@ -3,6 +3,6 @@
 	let double: number = $derived(count * 2);
 
 	$effect(() => {
-		console.log(count, $effect.active());
+		console.log(count, $effect.tracking());
 	});
 </script>
