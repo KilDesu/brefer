@@ -26,7 +26,7 @@ import { vitePreprocess } from "@sveltejs/vite-plugin-svelte";
 import { breferPreprocess } from "brefer";
 
 export default {
-	preprocess: [vitePreprocess(), breferPreprocess()]
+	preprocess: [breferPreprocess(), vitePreprocess()]
 };
 ```
 
@@ -196,7 +196,7 @@ To define non-reactive variables, you have 2 choices:
 
 - Use the `$static` rune
 
-  > This choice if better for when the first one can't be used, e.g for class properties, which are defined without any keyword
+  > This choice if better for when the first one can't be used, e.g for class properties which are defined without any keyword or when defining constants with `const`
 
 ### `$derived.by`
 
@@ -205,14 +205,16 @@ Brefer takes care of figuring out if you're using a function or an expression in
 For very rare edges cases, this could cause bugs, especially with nested callbacks. As an example, if you do that:
 
 ```js
-function foo() {
-	return () => "bar";
+let foo = "bar";
+
+function yeet() {
+	return () => `Yeet the ${foo}`;
 }
 
-let fizz = $(foo());
+let baz = $(yeet());
 ```
 
-Brefer will think you're trying to use an expression and will preprocess it to `let fizz = $derived(foo())` even if `$derived.by` should be used.
+Brefer will think you're trying to use an expression and will preprocess it to `let baz = $derived(yeet())` even if `$derived.by` should be used.
 
 Keep that in mind if you don't want to waste hours trying to debug your non-working code.
 
@@ -270,11 +272,11 @@ const cleanup = $$.root(() => {
 </tr>
 </table>
 
-### The `$frozen` rune
+### `$state` subrunes
 
-To be able to define variables with `$state.frozen` given the shorten syntax for `$state`'s, Brefer exposes a `$frozen` rune.
+To be able to define variables with `$state.raw` or use `$state.snapshot` given the shorten syntax for `$state`'s, Brefer exposes the `$raw` and `$snapshot` runes.
 
-Use it just as you would use `$state.frozen`.
+Use them just as you would use `$state.raw` and `$svelte.snapshot`.
 
 ## Pros and cons
 
